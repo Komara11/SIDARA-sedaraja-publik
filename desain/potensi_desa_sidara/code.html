@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Potensi Desa - SIDARA</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "surface-tint": "#1b6b51",
+                    "background": "#f8f9ff",
+                    "primary": "#004532",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#8bd6b7",
+                    "on-surface": "#0b1c30",
+                    "surface-container": "#e5eeff",
+                    "surface-variant": "#d3e4fe",
+                    "primary-fixed": "#a6f2d1",
+                    "surface-container-high": "#dce9ff",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "secondary": "#855300",
+                    "tertiary-container": "#005980",
+                    "on-primary-fixed": "#002116",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#89ceff",
+                    "on-tertiary-fixed-variant": "#004c6e",
+                    "on-primary-fixed-variant": "#00513b",
+                    "surface-container-low": "#eff4ff",
+                    "primary-container": "#065f46",
+                    "on-surface-variant": "#3f4944",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-secondary-fixed": "#2a1700",
+                    "secondary-container": "#fea619",
+                    "tertiary": "#00415f",
+                    "on-secondary-container": "#684000",
+                    "outline": "#6f7973",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#bec9c2",
+                    "tertiary-fixed": "#c9e6ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-tertiary-fixed": "#001e2f",
+                    "inverse-surface": "#213145",
+                    "inverse-primary": "#8bd6b6",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed": "#ffddb8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-fixed-dim": "#8bd6b6",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-container": "#8bcfff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "margin-desktop": "48px",
+                    "stack-sm": "12px",
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "stack-lg": "48px",
+                    "stack-md": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter", "sans-serif"],
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "headline-lg-mobile": ["Inter", "sans-serif"],
+                    "title-md": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "body-md": ["Inter", "sans-serif"],
+                    "display-lg": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Ambient Shadows as per guidelines */
+        .card-shadow-level-1 {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .card-shadow-level-1:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar Shared Component -->
+<nav class="bg-surface-container-lowest sticky top-0 z-50 shadow-sm w-full">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<!-- Brand Logo -->
+<a class="text-title-md font-title-md text-primary flex items-center gap-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spa</span>
+                SIDARA
+            </a>
+<!-- Navigation Links (Desktop) -->
+<ul class="hidden md:flex gap-gutter items-center">
+<li>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 py-2" href="#">Home</a>
+</li>
+<li>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 py-2" href="#">Profile</a>
+</li>
+<li>
+<!-- ACTIVE STATE -->
+<a class="font-label-sm text-label-sm text-primary font-bold border-b-2 border-primary py-2 hover:text-primary transition-colors duration-200" href="#">Potensi Desa</a>
+</li>
+<li>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 py-2" href="#">Berita</a>
+</li>
+</ul>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-stack-sm">
+<!-- Search Icon (Mobile) -->
+<button class="md:hidden text-on-surface-variant p-2 rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<!-- Primary Action -->
+<button class="bg-primary-container text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-[1.5rem] hover:opacity-90 transition-opacity">
+                    Masuk
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Header & Filters Section -->
+<header class="mb-stack-lg flex flex-col gap-stack-md items-center text-center">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary max-w-2xl">
+                Eksplorasi Kekayaan &amp; Potensi Desa Sedaraja
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
+                Jelajahi berbagai sektor unggulan desa mulai dari pertanian yang subur, perikanan, destinasi wisata alam, hingga produk inovatif UMKM lokal.
+            </p>
+<!-- Search and Filter Bar -->
+<div class="w-full max-w-3xl mt-stack-sm flex flex-col gap-stack-sm">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-[#F1F5F9] border-none rounded-[1.5rem] py-3 pl-12 pr-4 font-body-md text-on-surface placeholder:text-on-surface-variant/70 focus:ring-2 focus:ring-primary focus:outline-none transition-all" placeholder="Cari potensi, komoditas, atau UMKM..." type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap justify-center gap-2 mt-2">
+<button class="px-4 py-1.5 rounded-full bg-primary text-on-primary font-label-sm text-label-sm transition-colors">Semua</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-sm text-label-sm transition-colors border border-transparent focus:border-primary">Pertanian</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-sm text-label-sm transition-colors border border-transparent focus:border-primary">Perikanan</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-sm text-label-sm transition-colors border border-transparent focus:border-primary">Wisata</button>
+<button class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-variant font-label-sm text-label-sm transition-colors border border-transparent focus:border-primary">UMKM</button>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout for Inventory Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Featured Card: Wisata (Spans 2 columns on desktop) -->
+<article class="col-span-1 md:col-span-2 lg:col-span-2 bg-surface-container-lowest rounded-xl card-shadow-level-1 transition-all duration-300 flex flex-col md:flex-row overflow-hidden group">
+<div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
+<img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A breathtaking, wide landscape photograph of Bukit Pamoroan at sunrise. The rolling green hills are bathed in soft, warm golden morning light. Mist settles in the valleys below, creating a serene, majestic atmosphere. The image feels expansive, inviting, and professional, capturing the natural beauty of the rural tourism destination in high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEnzmyY2bIrPcsXULB4NN3558EDj24ImSvxrrtM6MHxHC7JrF-QxdNJJQ4V062qQoMbD95ZD_6FWHYrwIGrWz9XBbwXf56IHN6GGgfKH70RLJebMEGXMgaAe6Rl3Kyet2clLy9QRqjZWeb9laIyFYJCEjE77mwYOId6yDXLkJxv76CRiMZ1sJCcEqQYxFSo_YAXVyjuqeGhgBeI6a5HNrGz_m_8EOmqG5vl-hbMKffxIj_6xG0uI4i"/>
+<div class="absolute top-4 left-4 bg-tertiary-container/90 backdrop-blur-sm text-on-tertiary px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">landscape</span> Pariwisata
+                    </div>
+</div>
+<div class="p-stack-md flex flex-col justify-center w-full md:w-1/2">
+<h2 class="font-title-md text-title-md text-primary mb-2">Bukit Pamoroan</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">
+                        Destinasi wisata alam unggulan dengan pemandangan pegunungan yang menakjubkan, area perkemahan yang luas, dan spot foto matahari terbit yang ikonik. Ideal untuk rekreasi keluarga dan pencinta alam.
+                    </p>
+<div class="grid grid-cols-2 gap-stack-sm mb-6">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">camping</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Camping Ground</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Spot Foto</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">wc</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Fasilitas Toilet</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">restaurant</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Area Kuliner</span>
+</div>
+</div>
+<button class="w-full mt-auto border-2 border-primary text-primary font-label-sm text-label-sm py-2.5 rounded-[1.5rem] hover:bg-primary hover:text-on-primary transition-colors flex justify-center items-center gap-2">
+                        Lihat Detail <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card: Pertanian - Padi -->
+<article class="bg-surface-container-lowest rounded-xl card-shadow-level-1 transition-all duration-300 flex flex-col overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="An aerial, high-quality drone shot of perfectly organized, golden-green rice paddies ready for harvest. The fields form geometric patterns, illustrating organized and productive rural agriculture. The lighting is bright and clear, conveying a sense of growth, prosperity, and modern farming management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEUtpJjAbhg6kkhC5rgRhXnU_7ujjec_KvHrsXqLQVJAO2hlagg5yIV88D_OJqSeGL0ZvSXs3veB77jHFC-XAdtC2QFqMoSJLmuRYU-1wqto65XeX2PRMYFUP7S5M1HIeS3nf3r1uT5rCTfZXFLUoeQyv6JiXuJ1I-td9BUa-NSW_ilzrCqQQvpUuldP848y8Z4YYXeIlYBwjInCzwWNt8utMmRQ_l9T3CrSjAMOgKKth-6PxcEsGO"/>
+<div class="absolute top-4 left-4 bg-primary-container/90 backdrop-blur-sm text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">agriculture</span> Pertanian
+                    </div>
+</div>
+<div class="p-stack-md flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-2">
+<h2 class="font-title-md text-title-md text-primary">Komoditas Padi</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                        Sektor penyumbang utama perekonomian desa dengan sistem irigasi teknis yang terkelola dengan baik.
+                    </p>
+<div class="flex flex-col gap-3 pt-4 border-t border-surface-variant">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Luas Lahan</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="font-title-md text-title-md">50</span>
+<span class="font-label-sm text-label-sm font-normal">Hektar</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Musim Panen</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold bg-surface-container px-2 py-1 rounded">April - Mei</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card: UMKM -->
+<article class="bg-surface-container-lowest rounded-xl card-shadow-level-1 transition-all duration-300 flex flex-col overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A clean, bright, professional product shot of artisan local coffee beans packaged in eco-friendly kraft paper pouches. The packaging rests on a smooth wooden table next to a steaming cup of coffee. The lighting is soft and natural, emphasizing the high quality and tactile nature of this local small business product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjd7AD5dSZ4FldI_MDuhMSMfKLISG8WHN2kzym_LZIQokz7F0o8wRiwTVGcCmIKDqUNo4RFURxq6rL5mxepfzlwXu2H1h4ZM65Oi8QedYwDFH_beSTTEcg3nBqrarRJTo6s83u_zilLvYlpHQyew7wuG8mrrfjimx3K9CkVXg6-nXEkCAgGgvzEnj4p_a17siPcoxjU5AdALPv9kWLDtL4bfDb5mHVsARfQr48f1NtID7KaAABvkRW"/>
+<div class="absolute top-4 left-4 bg-secondary-container/90 backdrop-blur-sm text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">storefront</span> UMKM
+                    </div>
+</div>
+<div class="p-stack-md flex flex-col flex-grow">
+<h2 class="font-title-md text-title-md text-primary mb-1">Kopi Sedaraja</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-4 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">person</span> Bpk. Andi Susanto
+                    </p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                        Biji kopi robusta pilihan yang dipetik langsung dari kebun warga, disangrai dengan metode tradisional menghasilkan aroma khas.
+                    </p>
+<button class="w-full bg-surface-container-high text-primary font-label-sm text-label-sm py-2.5 rounded-[1.5rem] hover:bg-primary-container hover:text-on-primary transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span> Hubungi Pemilik
+                    </button>
+</div>
+</article>
+<!-- Card: Perikanan -->
+<article class="bg-surface-container-lowest rounded-xl card-shadow-level-1 transition-all duration-300 flex flex-col overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A calm, clear freshwater fish pond surrounded by neat concrete edges and lush green vegetation in a rural setting. A farmer is gently casting feed onto the water, creating ripples. The scene is bright and meticulously maintained, showcasing an organized and successful local fishery operation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFRi5bNXm3S0FT8MGpA_eKnCVvSwTYJ9a0rNnZE-YZ5WRzWWdq4hSq8Q8ZETw43PligIe4SyIVDmW5MOox8vCaR59M94Sa2LyAbkg1kHIEuCaFVC4d6jVjL1mbVtllzJm0cI-45FjK1E4Rywb4Up76o_TdhsHAfCEQbkI2AtKNw9-cwi5nIQwdF42Aj99BF_3gW2RD-Ssy4fhk1_s4PwyVF84DZoz5SJQzPmbqfErSsjd8h49ChmBF"/>
+<div class="absolute top-4 left-4 bg-tertiary-fixed-dim/90 backdrop-blur-sm text-on-tertiary-fixed-variant px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">water</span> Perikanan
+                    </div>
+</div>
+<div class="p-stack-md flex flex-col flex-grow">
+<h2 class="font-title-md text-title-md text-primary mb-2">Budidaya Ikan Nila</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                        Kolam air deras yang memanfaatkan aliran sungai jernih pegunungan, menghasilkan ikan konsumsi berkualitas tinggi.
+                    </p>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg mt-auto border border-surface-variant">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Jumlah Kolam Aktif</span>
+<span class="font-title-md text-title-md text-primary flex items-center gap-1">
+                                15 <span class="material-symbols-outlined text-tertiary text-[20px]">trending_up</span>
+</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">set_meal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Card: Pertanian - Jagung -->
+<article class="bg-surface-container-lowest rounded-xl card-shadow-level-1 transition-all duration-300 flex flex-col overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<div class="bg-cover bg-center w-full h-full group-hover:scale-105 transition-transform duration-700" data-alt="A macro shot of vibrant, sun-drenched golden corn on the cob still on the stalk in a vast field. The background is slightly blurred with blue skies, emphasizing the rich color and healthy texture of the corn. The image feels deeply tactile, organic, and represents agricultural abundance." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUjI8Tg4v3XRe6CPqxu87V4sa6tG25mR3E0tY70cpjsFchdsry14z0ILYsXaLgckrRPA0C8sj6HDKBIt8_yrWAU0a59iE-VfbclOdQmWOwEzNdZig55fAwzvCHh-48FONpw6QopoWupXuHDR6qL9UoReoAHp0bP33dBpY6tdEhUIG-F-Y7JIgix9rB32ZPjvXj0ZPtJLENgDa-lfckOSSua6vY4d_FH0YaseyFj0RG4BLILFPxhvv_')"></div>
+<div class="absolute top-4 left-4 bg-primary-container/90 backdrop-blur-sm text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">agriculture</span> Pertanian
+                    </div>
+</div>
+<div class="p-stack-md flex flex-col flex-grow">
+<h2 class="font-title-md text-title-md text-primary mb-2">Komoditas Jagung</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
+                        Ditanam pada area tegalan sebagai tanaman sela yang memberikan nilai ekonomi tambahan yang signifikan bagi petani.
+                    </p>
+<div class="flex flex-col gap-3 pt-4 border-t border-surface-variant">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Luas Lahan</span>
+<div class="flex items-center gap-1 text-primary">
+<span class="font-title-md text-title-md">20</span>
+<span class="font-label-sm text-label-sm font-normal">Hektar</span>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Musim Panen</span>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold bg-surface-container px-2 py-1 rounded">Juni - Juli</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-primary dark:bg-primary-container mt-auto">
+<div class="w-full px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto flex flex-col md:flex-row justify-between gap-stack-md">
+<!-- Brand & Copyright -->
+<div class="flex flex-col gap-2">
+<div class="text-title-md font-title-md text-on-primary dark:text-on-primary-container flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spa</span>
+                    SIDARA
+                </div>
+<p class="font-body-md text-body-md text-on-primary/80">
+                    © 2024 Pemerintah Desa Sedaraja. All rights reserved.
+                </p>
+</div>
+<!-- Footer Links -->
+<ul class="flex flex-wrap gap-4 md:gap-8 items-center">
+<li>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kontak</a>
+</li>
+<li>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kebijakan Privasi</a>
+</li>
+<li>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Peta Situs</a>
+</li>
+<li>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Media Sosial</a>
+</li>
+</ul>
+</div>
+</footer>
+</body></html>

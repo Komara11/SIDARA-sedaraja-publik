@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Berita &amp; Galeri - SIDARA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f8f9ff",
+                      "surface-tint": "#1b6b51",
+                      "background": "#f8f9ff",
+                      "primary": "#004532",
+                      "on-secondary": "#ffffff",
+                      "on-primary-container": "#8bd6b7",
+                      "on-surface": "#0b1c30",
+                      "surface-container": "#e5eeff",
+                      "surface-variant": "#d3e4fe",
+                      "primary-fixed": "#a6f2d1",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "secondary": "#855300",
+                      "tertiary-container": "#005980",
+                      "on-primary-fixed": "#002116",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed-dim": "#89ceff",
+                      "on-tertiary-fixed-variant": "#004c6e",
+                      "on-primary-fixed-variant": "#00513b",
+                      "surface-container-low": "#eff4ff",
+                      "primary-container": "#065f46",
+                      "on-surface-variant": "#3f4944",
+                      "surface-bright": "#f8f9ff",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "on-secondary-fixed": "#2a1700",
+                      "secondary-container": "#fea619",
+                      "tertiary": "#00415f",
+                      "on-secondary-container": "#684000",
+                      "outline": "#6f7973",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "error": "#ba1a1a",
+                      "outline-variant": "#bec9c2",
+                      "tertiary-fixed": "#c9e6ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-tertiary-fixed": "#001e2f",
+                      "inverse-surface": "#213145",
+                      "inverse-primary": "#8bd6b6",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#ffddb8",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-highest": "#d3e4fe",
+                      "primary-fixed-dim": "#8bd6b6",
+                      "on-background": "#0b1c30",
+                      "on-tertiary-container": "#8bcfff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-desktop": "48px",
+                      "stack-sm": "12px",
+                      "margin-mobile": "16px",
+                      "base": "8px",
+                      "stack-lg": "48px",
+                      "stack-md": "24px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "title-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-primary/20">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest dark:bg-surface-container-lowest docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<!-- Brand -->
+<a class="text-title-md font-title-md text-primary dark:text-inverse-primary tracking-tight" href="#">SIDARA</a>
+<!-- Links (Desktop) -->
+<div class="hidden md:flex gap-gutter items-center font-label-sm text-label-sm">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Profile</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Potensi Desa</a>
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Berita</a>
+</div>
+<!-- Trailing Action -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center gap-2 px-6 py-2.5 bg-primary-container text-on-primary rounded-full hover:bg-primary-container/90 transition-all font-label-sm text-label-sm shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                    Masuk
+                </button>
+<button class="md:hidden p-2 text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg space-y-24">
+<!-- Header Section -->
+<header class="text-center space-y-4 max-w-2xl mx-auto">
+<h1 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-primary tracking-tight">Kabar Desa Sedaraja</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Ikuti perkembangan terbaru, kegiatan masyarakat, dan pencapaian desa kita tercinta.</p>
+</header>
+<!-- Featured News (Hero Card) -->
+<section class="group relative rounded-xl overflow-hidden bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300">
+<div class="flex flex-col md:flex-row h-full">
+<div class="w-full md:w-3/5 h-64 md:h-[400px] relative overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" data-alt="A vibrant photograph of a newly built community center in a rural Indonesian village. Villagers are gathered around in traditional and modern casual clothing, smiling and celebrating. The building is modern but incorporates traditional wooden elements. Sunlight filters through lush green trees, casting soft shadows. The overall mood is optimistic, communal, and progressive, fitting a corporate modern aesthetic with a tactile warmth. High resolution, bright, natural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWnt5disP31oCh2zEBR_XFqQVKHpmB90iaxa27ywdq0jLTP3TQ_evA1eVTYEUb4eUXU27MPR7hSWM-tZ62SgODjiHt5O6ZlWgQnQQCDYrvRjUQqwRVN753dzmsy5rxsPVq0TYzMUpDFIdROLeboJu0l5IkVl21oigQ3NePjFJl6EgMoqVrVMzGiDfRzA-e3tnjgb7zbqOzjFAnzdNZkPO0v3o83dfyg8ldNni3W5V1oz1zLz8n0Shd"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/80 via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-primary/10 backdrop-blur-sm text-primary-fixed bg-white/20 rounded-full font-label-sm text-label-sm border border-white/10">Pembangunan Utama</span>
+</div>
+</div>
+<div class="w-full md:w-2/5 p-stack-md flex flex-col justify-center bg-surface-container-lowest">
+<div class="flex items-center gap-2 mb-4 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined" style="font-size: 16px;">calendar_today</span>
+<span>12 Oktober 2024</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4 group-hover:text-primary transition-colors">Peresmian Balai Desa Baru &amp; Pusat Inovasi Pertanian</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3">Pemerintah Desa Sedaraja resmi membuka fasilitas baru yang akan menjadi pusat kegiatan warga dan pelatihan inovasi pertanian modern, mendukung visi desa mandiri pangan.</p>
+<a class="inline-flex items-center gap-2 text-primary font-label-sm text-label-sm group-hover:gap-3 transition-all" href="#">
+                        Baca Selengkapnya <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- News Feed Grid -->
+<section class="space-y-stack-md">
+<div class="flex justify-between items-end border-b border-outline-variant/30 pb-4">
+<h3 class="font-title-md text-title-md text-primary">Berita Terbaru</h3>
+<div class="hidden md:flex gap-4 font-label-sm text-label-sm">
+<button class="text-primary border-b-2 border-primary pb-1">Semua</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors pb-1">Pembangunan</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors pb-1">Sosial</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors pb-1">Ekonomi</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- News Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A close-up shot of a modern irrigation system in a lush green rice paddy field. Clean water flows efficiently through concrete channels. A farmer in a woven hat stands in the background inspecting the crops. The lighting is early morning, soft and golden. The aesthetic is clean, agricultural, and forward-looking, highlighting sustainable farming practices in a rural setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIYvMcW5IJnncULJ1BWmatMekFvBDiAWU7fSp62cH0Y809QegZVGLNOI8fHxElYXs0-l2uYvSsQfbCFqVjBu0zA9-eMQY8j8zbxvV_RqCBY1q5g30VAPB8o95cgqfAhZLria8YhsLa_b44DA61bzgJw4tZXDdD-gEsbHL0q6j8DAUoYxOm66AG2JHIezVFMCmQnxD1BjcIMXeuZ-qO_sVXUACUFHFKHBb9kfOEn1bnSUu6_3OkS94F"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-secondary-container/90 text-on-secondary-container backdrop-blur-sm rounded-full font-label-sm text-label-sm">Ekonomi</span>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col">
+<div class="text-on-surface-variant font-label-sm text-label-sm mb-2">10 Oktober 2024</div>
+<h4 class="font-title-md text-title-md text-on-surface mb-3 group-hover:text-primary transition-colors line-clamp-2">Peningkatan Sistem Irigasi Subak Tingkatkan Hasil Panen 20%</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-4 flex-grow">Program modernisasi irigasi yang didanai dana desa mulai menampakkan hasil positif bagi kelompok tani lokal.</p>
+<span class="inline-flex items-center gap-1 text-primary font-label-sm text-label-sm">Lihat Detail <span class="material-symbols-outlined text-sm">arrow_outward</span></span>
+</div>
+</article>
+<!-- News Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A bright, airy classroom in a village school. Children in neat uniforms are sitting at modern wooden desks, looking attentively at a smartboard. The room is painted in light, clean colors. Sunlight streams through large windows. The mood is educational, hopeful, and focused on youth development. Professional, corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Sw8zSjro5Zltw0X9e4UeH2vQPcD13Gxe5kUP5UOzwIfEfDF5AAr50U9G7vwWOOTb7FbMEOB9jM6uFacHt1urerCSCkTc-tRL1RgRHZGCWcKGM9yl6gHy44Yhp76HKtTJxAOZxxYb5VNl_bf5NMEGvmnZrWRdPJtryCfp9_slDnw5Gg1RKhVWe8NPsqMDpVh29y6aYtOHrQqJJhcWrcqx6PQJ-ZIQ_dKaXWDycSq1w_-_1UW-uBwk"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-tertiary-container/90 text-on-tertiary-container backdrop-blur-sm rounded-full font-label-sm text-label-sm">Sosial</span>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col">
+<div class="text-on-surface-variant font-label-sm text-label-sm mb-2">08 Oktober 2024</div>
+<h4 class="font-title-md text-title-md text-on-surface mb-3 group-hover:text-primary transition-colors line-clamp-2">Bantuan Alat Tulis &amp; Beasiswa untuk 50 Siswa Berprestasi</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-4 flex-grow">Penyerahan beasiswa pendidikan tahap kedua tahun ini sebagai komitmen memajukan SDM generasi muda Sedaraja.</p>
+<span class="inline-flex items-center gap-1 text-primary font-label-sm text-label-sm">Lihat Detail <span class="material-symbols-outlined text-sm">arrow_outward</span></span>
+</div>
+</article>
+<!-- News Card 3 -->
+<article class="bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A wide shot of a neatly paved village road cutting through a verdant landscape. Workers in safety vests are seen in the distance finishing road markings. The road looks clean, smooth, and modern. Surrounding fields are vibrant green. Clear blue sky with soft white clouds. The aesthetic conveys progress, infrastructure development, and orderly governance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ3ERzGKkFXKJtlZn_3tOluNrEv_lB9wDCgc4QJ5p0GvvNa-Yn4m_1iBrqk5qo3_Ss19oDWRG5Xob86ZgU69gMW6T__jZt4GgTX_V8IgKGT_fhQBNzkxm05TIUZnl3C08Ig6bWnMj2W45FYk7Y_S8AClRSD56TKG8wiJK3Tgdyfk8ouRlb6REQ5OzaCkGGHcomGLev0Z0P68pygsqgztRwylFvyGgI4wFMCU2BH1FZzlfsXvt9h4E1"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-primary/90 text-on-primary backdrop-blur-sm rounded-full font-label-sm text-label-sm">Pembangunan</span>
+</div>
+</div>
+<div class="p-stack-md flex-grow flex flex-col">
+<div class="text-on-surface-variant font-label-sm text-label-sm mb-2">05 Oktober 2024</div>
+<h4 class="font-title-md text-title-md text-on-surface mb-3 group-hover:text-primary transition-colors line-clamp-2">Pengaspalan Jalan Dusun II Rampung 100%</h4>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-4 flex-grow">Akses mobilitas warga kini semakin lancar dengan selesainya proyek pengaspalan sepanjang 2 kilometer di area utara desa.</p>
+<span class="inline-flex items-center gap-1 text-primary font-label-sm text-label-sm">Lihat Detail <span class="material-symbols-outlined text-sm">arrow_outward</span></span>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center items-center gap-2 mt-8 font-label-sm text-label-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors disabled:opacity-50">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Galeri Kegiatan (Masonry) -->
+<section class="space-y-stack-md bg-surface-container p-margin-desktop -mx-margin-desktop md:rounded-3xl">
+<header class="text-center space-y-2 mb-8">
+<h3 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Galeri Kegiatan</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Dokumentasi momen-momen penting kemasyarakatan.</p>
+</header>
+<div class="columns-1 sm:columns-2 lg:columns-3 gap-gutter space-y-gutter">
+<!-- Gallery Item 1 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow">
+<img class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A group of village women in vibrant traditional batik clothing participating in a local craft workshop. They are smiling and weaving bamboo baskets. The setting is an open-air pavilion with wooden pillars. Warm, natural daylight. The mood is collaborative, cultural, and joyful. High-quality editorial style photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlcqHrizZgLlw0PFlCSCBsfYh0GEm-X8nsDJFqsOVLtToxTjeyE6mwcvYAUvDtMwP_TDWlqXoLK3hF5USpp7oxHxqy_MKw32BGDu7ZzCpcYt3EZjLxtYKtlkxm8LBFjhgwdCy13UCORJLoO4LmxpzPpShLBqKw2dh1jRHsXCZABHmW01BuVYUuFeJUtLDBQNaDMa5y7W-TKsvu25zkT_EeYV54IXu8OTHZ6n9qG6T15m3EGFiRD2sE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+<p class="text-white font-label-sm text-label-sm">Pelatihan Kerajinan Tangan Ibu PKK</p>
+</div>
+</div>
+<!-- Gallery Item 2 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow">
+<img class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A wide angle shot of a vibrant village festival. Colorful banners hang across the street. A traditional dance performance is happening in the center, surrounded by a large crowd of onlookers. Festivity, motion blur on the dancers to show movement, bright daylight, festive atmosphere. Corporate modern aesthetic mixed with cultural richness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx6vJJVDZC3XmLNv0fr95pSc3YWBbfxns3S7uH6fi_bHFPQ15OLlRakYWklCJkFbkk3s8rcwRtL6MryMF1YkDq-w2cTuQU7mhE1ZE8cNC5Y3al3AmdIQhS7BAhSkQdWNuFH9C7n1cmMIeSdV8P7qTQhAVWSnnQpENHHIcyU35RpdqyjIoyUqNxWInrTpbaAuweAUz3PeY2zTSN0_316CRkHIoz2JVZNEjrifCVDddjdhwbevGkItey"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+<p class="text-white font-label-sm text-label-sm">Festival Budaya Sedaraja 2024</p>
+</div>
+</div>
+<!-- Gallery Item 3 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow">
+<img class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="A close up of a farmer's hands holding a handful of freshly harvested, golden rice grains. The background is slightly blurred showing a vast rice field ready for harvest. Warm, golden hour lighting emphasizing the texture of the grains and the tactile warmth of the agricultural lifestyle. High contrast, professional grade photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUCXxxZNLBlLJocE6kG8Se6P9qRYOm2N3c7mr3oIJAO1NNZhX08qXf3TtNxkB8qPGx9thYGODnN1voxnqjp4R7rSfRRprAOEgTUFvwr0rQoxz_FDWi0wD8ycV2MJAKDnODH25qVTgKStZ1p5Q8UvumAund1Zc9PC4Hd4lIUPlxDhWH3-QjLDfUqhEeA5f3zQsi_ou6xo_kx4yPA2DD44IdZxYDYYILCuDIDkhxbPq_mMPiurUx8lM7"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+<p class="text-white font-label-sm text-label-sm">Panen Raya Dusun I</p>
+</div>
+</div>
+<!-- Gallery Item 4 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow">
+<img class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="Village officials and medical staff conducting a free health clinic in a clean, modern village hall. A doctor is taking an elderly man's blood pressure. Caring, professional environment. Bright, soft lighting, conveying trust and healthcare progress in a rural setting. Corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnxFGM0pOlu47vm8JoIoWlBJa5cGxH5g0kfHdo2VnxkkOUFBrsitgp7gdXiDIfgcM-h-39ZLdYeSH5gJcfTS87sbGRnHj7LuHGqi6im2i1SzBLbcoS0tNeM_LigbUFGi9i7qEcJiM01UcwdKzE-lPDxHJdDqXVBXcFihwm2SVbkmG43kHeUp37djOgWk3rqEyn024BjJDNUwBSLin_sw8U4H42je5s0-9V3u9an3wP4wI3Gfc8-od6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+<p class="text-white font-label-sm text-label-sm">Pemeriksaan Kesehatan Gratis Lansia</p>
+</div>
+</div>
+<!-- Gallery Item 5 -->
+<div class="break-inside-avoid relative group rounded-xl overflow-hidden cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow">
+<img class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500" data-alt="Young people enthusiastically planting tree saplings along a riverbank. Muddy hands, green foliage, bright sunny day. A sense of environmental stewardship and community action. The image feels energetic and tactile. High resolution, vibrant colors, emphasizing the primary green tones of nature." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkiECAb_PZvsvNUCP5hCEEo1vR1DzaLHPUQ6dfEJfZKZg0ALUsB6NZNp63OA5cmIHfp2WqYWvFIKnf9OxiGEq9kUy30XgyOm6RKWk_1kGy67V8kx4GXs55WRkUG25p3aj2x1q9n47PCyA-Ek_TMMxhwjmGZ0xBMkvQ2vI9A_3ZE12pICUm0XINXn7OePX3Q4rcP-dJr9pXISaEsHCJYbRiDVycpzPwNRggcMNC3vJ9vhnW6_xMRzKA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+<p class="text-white font-label-sm text-label-sm">Gotong Royong Penghijauan Bantaran Sungai</p>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-8">
+<button class="px-6 py-2.5 bg-transparent border-2 border-primary text-primary rounded-full hover:bg-primary/5 transition-colors font-label-sm text-label-sm">
+                    Muat Lebih Banyak
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container full-width bottom-0">
+<div class="w-full px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto flex flex-col md:flex-row justify-between gap-stack-md">
+<!-- Brand & Copyright -->
+<div class="space-y-4 md:w-1/3">
+<div class="text-title-md font-title-md text-on-primary dark:text-on-primary-container">SIDARA</div>
+<p class="font-body-md text-body-md text-on-primary/80">Sistem Informasi Data dan Aset Desa Sedaraja.</p>
+<div class="font-label-sm text-label-sm text-on-primary/60">
+                    © 2024 Pemerintah Desa Sedaraja. All rights reserved.
+                </div>
+</div>
+<!-- Links -->
+<div class="flex flex-wrap gap-x-8 gap-y-4 md:justify-end font-label-sm text-label-sm items-center">
+<a class="text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kontak</a>
+<a class="text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kebijakan Privasi</a>
+<a class="text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Peta Situs</a>
+<a class="text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Media Sosial</a>
+</div>
+</div>
+</footer>
+</body></html>

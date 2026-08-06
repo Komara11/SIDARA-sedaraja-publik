@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profil Desa - SIDARA</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f8f9ff",
+                        "surface-tint": "#1b6b51",
+                        "background": "#f8f9ff",
+                        "primary": "#004532",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#8bd6b7",
+                        "on-surface": "#0b1c30",
+                        "surface-container": "#e5eeff",
+                        "surface-variant": "#d3e4fe",
+                        "primary-fixed": "#a6f2d1",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "secondary": "#855300",
+                        "tertiary-container": "#005980",
+                        "on-primary-fixed": "#002116",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#89ceff",
+                        "on-tertiary-fixed-variant": "#004c6e",
+                        "on-primary-fixed-variant": "#00513b",
+                        "surface-container-low": "#eff4ff",
+                        "primary-container": "#065f46",
+                        "on-surface-variant": "#3f4944",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-secondary-fixed": "#2a1700",
+                        "secondary-container": "#fea619",
+                        "tertiary": "#00415f",
+                        "on-secondary-container": "#684000",
+                        "outline": "#6f7973",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#bec9c2",
+                        "tertiary-fixed": "#c9e6ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-tertiary-fixed": "#001e2f",
+                        "inverse-surface": "#213145",
+                        "inverse-primary": "#8bd6b6",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffddb8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#d3e4fe",
+                        "primary-fixed-dim": "#8bd6b6",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-container": "#8bcfff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "stack-sm": "12px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "stack-lg": "48px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "title-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "title-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (From Shared Components) -->
+<header class="bg-surface-container-lowest top-0 sticky z-50 shadow-sm w-full">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined icon-fill text-primary text-[28px]" data-icon="eco">eco</span>
+<span class="text-title-md font-title-md text-primary">SIDARA</span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex gap-8 items-center">
+<!-- Home: Inactive -->
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 opacity-100 hover:scale-95 transition-transform" href="#">Home</a>
+<!-- Profile: Active (Context: Profil Desa Page) -->
+<a class="font-label-sm text-label-sm text-primary font-bold border-b-2 border-primary opacity-80 scale-95 transition-transform" href="#">Profile</a>
+<!-- Potensi Desa: Inactive -->
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 opacity-100 hover:scale-95 transition-transform" href="#">Potensi Desa</a>
+<!-- Berita: Inactive -->
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors duration-200 opacity-100 hover:scale-95 transition-transform" href="#">Berita</a>
+</nav>
+<!-- Trailing Primary Action -->
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center bg-primary-container text-on-primary font-label-sm text-label-sm px-6 py-2 rounded-full hover:bg-primary transition-colors shadow-sm">
+                    Masuk
+                </button>
+<!-- Mobile Menu Icon -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col gap-stack-lg">
+<!-- Page Header -->
+<section class="flex flex-col gap-stack-sm text-center max-w-2xl mx-auto mb-8">
+<h1 class="font-display-lg text-display-lg text-primary">Profil Desa</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Mengenal lebih dekat sejarah, visi, dan struktur pemerintahan Desa Sedaraja yang terus berinovasi untuk kemajuan bersama.</p>
+</section>
+<!-- Sejarah Desa Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter items-center bg-surface-container-lowest rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] overflow-hidden">
+<div class="p-stack-md flex flex-col gap-stack-md">
+<div class="flex items-center gap-2 text-secondary-container">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<h2 class="font-title-md text-title-md text-primary">Sejarah Desa</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Desa Sedaraja didirikan pada awal abad ke-19, berawal dari sebuah pemukiman kecil yang bertumpu pada sektor pertanian tradisional. Nama 'Sedaraja' mencerminkan harapan luhur para pendiri akan kemakmuran dan kehormatan yang setara dengan keluarga kerajaan.
+                </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Seiring berjalannya waktu, desa ini telah bertransformasi menjadi pusat pertumbuhan agraria modern tanpa meninggalkan akar budayanya. Inovasi digital dan partisipasi aktif warga kini menjadi pilar utama pembangunan berkelanjutan di Sedaraja.
+                </p>
+</div>
+<div class="h-full min-h-[300px] relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A vivid historical photograph representation of a rural village transitioning into a modern digital era. The scene blends rustic agricultural fields with subtle, modern infrastructure elements like solar panels or digital weather stations. The aesthetic is corporate modern light-mode, characterized by crisp whites, vibrant natural greens, and a clean, optimistic atmosphere. The lighting is bright and airy, evoking progress and heritage working in harmony." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClRY5ynZmEr4In1AOD69QJUU1NAxZyVN8WXGAthPUEL_-qGKmlimOxkSAif7l-EcEA4bFJ0SxggWk3Y2iUpyGLaw7ZS0tFsoNys1RikvLuDfEHGVLnwuyE1rMgnecR2K5tsOEa8MkS5ZnaJVX37VSHYrN6KfdmEVpAykYEVA_9n12IaG5V_LwYWJpFAEF7fYdyc6sKyGmz9LAGaxD4IimfaRRaRRuQnuTBgNtUZgHIypJZCmklbr8N"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 to-transparent md:hidden"></div>
+</div>
+</section>
+<!-- Visi & Misi Section (Bento Grid) -->
+<section class="flex flex-col gap-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-primary text-center">Visi &amp; Misi</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Visi Card -->
+<div class="md:col-span-1 bg-primary text-on-primary rounded-xl p-stack-md flex flex-col gap-stack-sm shadow-sm hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-shadow duration-300">
+<span class="material-symbols-outlined text-[40px] text-primary-fixed" data-icon="visibility">visibility</span>
+<h3 class="font-title-md text-title-md">Visi Utama</h3>
+<p class="font-body-md text-body-md opacity-90">
+                        "Terwujudnya Desa Sedaraja yang Mandiri, Inovatif, dan Sejahtera melalui optimalisasi potensi lokal berbasis teknologi berkelanjutan."
+                    </p>
+</div>
+<!-- Misi Cards Container -->
+<div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-stack-sm">
+<!-- Misi 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md flex items-start gap-4 shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="groups">groups</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary mb-1">Tata Kelola</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Mewujudkan pemerintahan desa yang transparan, akuntabel, dan responsif terhadap kebutuhan warga.</p>
+</div>
+</div>
+<!-- Misi 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md flex items-start gap-4 shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="agriculture">agriculture</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary mb-1">Ekonomi</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Meningkatkan kemandirian ekonomi masyarakat melalui pemberdayaan UMKM dan modernisasi pertanian.</p>
+</div>
+</div>
+<!-- Misi 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md flex items-start gap-4 shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="school">school</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary mb-1">Sosial Budaya</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Meningkatkan kualitas sumber daya manusia yang berpendidikan dan memelihara kerukunan antar warga.</p>
+</div>
+</div>
+<!-- Misi 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md flex items-start gap-4 shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="nature">nature</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-primary mb-1">Infrastruktur</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Membangun infrastruktur desa yang ramah lingkungan dan terintegrasi dengan sistem informasi digital.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Struktur Organisasi Section -->
+<section class="flex flex-col gap-stack-md items-center py-stack-md">
+<h2 class="font-headline-lg text-headline-lg text-primary text-center">Struktur Pemerintahan</h2>
+<div class="w-full flex flex-col items-center relative gap-8 mt-4">
+<!-- Kepala Desa -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col items-center gap-3 w-64 border border-surface-variant z-10">
+<div class="w-20 h-20 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a village leader in a formal, modern corporate setting. The individual projects trustworthiness and capability. The background is a very light gray or subtle white, adhering strictly to a pristine, light-mode corporate visual identity. Sharp focus and high-end studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQQxYY5hDKMUoSTeFw8ujaDPI4GCoq-2aJnV8Pi8KnJKxjBCn9kE0t2qTD-G3HDdlnFyc0s79NB90Erf2c7V_v_bndBlTFNHd3fTQB4D7a6FVdoM_K0H7EAY7D4q2QME4vMVM8ytOdNtKy5rpMm3KjSbwaUeF4Kei39DmKHpGnnx3yUXqqvb76yIVo5FKl2rEr8_7_x9t-whFlO33T9lNLi1XkRj3cLiXdisdEMyYZsCAvT9cJOFTM"/>
+</div>
+<div class="text-center">
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-wide">Kepala Desa</p>
+<p class="font-title-md text-title-md text-on-surface mt-1">Budi Santoso</p>
+</div>
+</div>
+<!-- Connecting Line (Vertical) -->
+<div class="hidden md:block w-px h-8 bg-outline-variant -my-4 z-0"></div>
+<!-- Second Tier Row -->
+<div class="flex flex-col md:flex-row gap-gutter relative w-full justify-center">
+<!-- Connecting Line (Horizontal) -->
+<div class="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[calc(66%-24px)] h-px bg-outline-variant z-0"></div>
+<!-- Sekdes -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex items-center gap-4 w-full md:w-72 border border-surface-variant z-10 relative mt-0 md:mt-6">
+<div class="hidden md:block absolute -top-6 left-1/2 w-px h-6 bg-outline-variant z-0"></div>
+<div class="w-12 h-12 rounded-full bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a female administrative secretary for a rural governance platform. Clean, bright light-mode aesthetic, corporate modern style. Soft, approachable lighting, set against a pristine white or light gray background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwL89h4SG4eO18JnV69Jt8nuximDNaZPdiQuFGqs1PTolNqjYuP8AdHrtzCnWOIcXKGCBGfKahP_xqD8-rrnwXF9hOOeMMtn7pb0COun-NhIESPZz7W8nliR1rUgM2xiV9vdc1ZjmA5f1_Whd9lbkc_u1gSXuq63CkFTaF74ZVfjHCn_sy-q43dNBhxxbu1ucSqPSKGcm0ntBxintt5xZ5M4BsoRU_9vnHA7l5Yc7d2MC1rrpYKEuR"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-wide">Sekretaris Desa</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Siti Rahmawati</p>
+</div>
+</div>
+<!-- Kasi Pemerintahan -->
+<div class="bg-surface-container-lowest p-4 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex items-center gap-4 w-full md:w-72 border border-surface-variant z-10 relative mt-0 md:mt-6">
+<div class="hidden md:block absolute -top-6 left-1/2 w-px h-6 bg-outline-variant z-0"></div>
+<div class="w-12 h-12 rounded-full bg-surface-container overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a male local government official. Dressed neatly, exuding efficiency and dedication. The portrait is captured in a high-key, modern corporate style with bright, clear lighting and a soft, unobtrusive background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Qad8Dqlz-BNapzhk8VfOXh2ROJXw6US1UUB82olJk55Js80w4vOX58DWSCsYpxM46eOW1Bt99hnFHqHv34MLRLwab7LuYWV596QN13HJvXIBhoh7E8QYTuNy1n8n2Q40Bgoq72HwcZ65GHHRYUzJjmmt_PXXNCR_gn6S5b5-dEs41GoAUhk5798JSWW0SWwi8k92mPBCQhPiYM1P1xpdybclGbgpqZbs6Oqy8zd29HCKgss4ysA6"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-tertiary-container uppercase tracking-wide">Kasi Pemerintahan</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">Ahmad Fauzi</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Demografi Section -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-primary">Data Demografi</h2>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1 hover:underline">
+                    Lihat Detail <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Gender Dist -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="wc">wc</span> Jenis Kelamin
+                    </h3>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-body-sm text-sm text-on-surface-variant">Laki-laki</p>
+<p class="font-headline-lg text-headline-lg text-primary">1,245</p>
+</div>
+<div class="text-right">
+<p class="font-body-sm text-sm text-on-surface-variant">Perempuan</p>
+<p class="font-headline-lg text-headline-lg text-tertiary-container">1,310</p>
+</div>
+</div>
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 48.7%"></div>
+<div class="h-full bg-tertiary-container" style="width: 51.3%"></div>
+</div>
+</div>
+<!-- Age Dist -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" data-icon="cake">cake</span> Kelompok Umur
+                    </h3>
+<div class="flex flex-col gap-2 flex-grow justify-center">
+<div class="flex items-center gap-3">
+<span class="font-label-sm w-12 text-on-surface-variant">0-14</span>
+<div class="flex-grow h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 25%"></div>
+</div>
+<span class="font-label-sm w-10 text-right">25%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm w-12 text-on-surface-variant">15-64</span>
+<div class="flex-grow h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
+</div>
+<span class="font-label-sm w-10 text-right font-medium text-primary">65%</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm w-12 text-on-surface-variant">65+</span>
+<div class="flex-grow h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant rounded-full" style="width: 10%"></div>
+</div>
+<span class="font-label-sm w-10 text-right">10%</span>
+</div>
+</div>
+</div>
+<!-- Education Dist -->
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex flex-col gap-4">
+<h3 class="font-title-md text-title-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="local_library">local_library</span> Pendidikan
+                    </h3>
+<div class="flex flex-wrap gap-2 mt-2">
+<div class="px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full font-label-sm text-label-sm">
+                            SD/Sederajat (30%)
+                        </div>
+<div class="px-3 py-1 bg-surface-container-high text-on-surface rounded-full font-label-sm text-label-sm">
+                            SMP/Sederajat (35%)
+                        </div>
+<div class="px-3 py-1 bg-surface-container-high text-on-surface rounded-full font-label-sm text-label-sm">
+                            SMA/Sederajat (25%)
+                        </div>
+<div class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-full font-label-sm text-label-sm">
+                            Diploma/Sarjana (10%)
+                        </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Peta Desa Section -->
+<section class="flex flex-col gap-stack-md mt-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">Peta Wilayah</h2>
+<div class="w-full h-80 md:h-96 bg-surface-container-high rounded-xl overflow-hidden relative shadow-[0_4px_12px_rgba(0,0,0,0.04)] border border-surface-variant group">
+<!-- Pseudo Map Container via Image Injection -->
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A clean, highly professional digital map interface showing a rural village region. The map uses a light-mode color palette with subtle greens, off-whites, and soft gray roads, aligning perfectly with a modern corporate dashboard aesthetic. Minimalist markers and distinct territorial boundaries." data-location="Sedaraja, Indonesia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTkX85stmTuUNwZGaxHOz7OTV-mosMtrexQQPQ-jIQVvFbHojsUV44gr-LSJyAD3g_eIlcRZGmVovAEX2X9dAaQ-saFhx_XJC5s7EGyRP4a1fj7ZWfyLtW7lTX8mF-TfCxdFilu3rl4Sl4QovO0yLZl0I4XSU2YI6bIV4fks1gkN6Z32sv8F-B5ftfcu72-9LsY7-6e2XtICDTdcIvvPi3AAlB0kkHGky51J-DNF5fjNOyxcAwZ7Y3"/>
+<!-- Map Overlay UI -->
+<div class="absolute bottom-4 right-4 bg-surface-container-lowest p-3 rounded-lg shadow-md flex flex-col gap-2">
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container rounded hover:bg-surface-variant text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container rounded hover:bg-surface-variant text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+</button>
+</div>
+<div class="absolute top-4 left-4 bg-surface-container-lowest px-4 py-2 rounded-full shadow-md flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Area Administratif</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (From Shared Components) -->
+<footer class="bg-primary w-full mt-auto">
+<div class="w-full px-margin-mobile md:px-margin-desktop py-stack-lg max-w-container-max mx-auto flex flex-col md:flex-row justify-between gap-stack-md">
+<!-- Brand & Copyright -->
+<div class="flex flex-col gap-2">
+<span class="text-title-md font-title-md text-on-primary">SIDARA</span>
+<p class="font-body-md text-body-md text-on-primary/80">© 2024 Pemerintah Desa Sedaraja. All rights reserved.</p>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-wrap gap-x-6 gap-y-3 md:justify-end items-center">
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kontak</a>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Kebijakan Privasi</a>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Peta Situs</a>
+<a class="font-label-sm text-label-sm text-on-primary/80 hover:text-on-primary-container hover:underline transition-all duration-300" href="#">Media Sosial</a>
+</div>
+</div>
+</footer>
+</body></html>
