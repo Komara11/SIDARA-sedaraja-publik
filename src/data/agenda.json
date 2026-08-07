@@ -1,0 +1,50 @@
+[
+  {
+    "id": "agenda-001",
+    "title": "Rapat Musyawarah Desa (Musdes)",
+    "date": "15",
+    "month": "Agu",
+    "year": "2026",
+    "time": "09:00 - 12:00 WIB",
+    "location": "Balai Desa Sedaraja",
+    "type": "Pemerintahan",
+    "status": "Akan Datang",
+    "description": "Pembahasan rancangan pembangunan desa tahun 2027 bersama tokoh masyarakat dan jajaran aparatur."
+  },
+  {
+    "id": "agenda-002",
+    "title": "Upacara HUT RI ke-81",
+    "date": "17",
+    "month": "Agu",
+    "year": "2026",
+    "time": "07:00 - Selesai",
+    "location": "Lapangan Desa",
+    "type": "Umum",
+    "status": "Akan Datang",
+    "description": "Upacara peringatan Hari Ulang Tahun Kemerdekaan Republik Indonesia ke-81."
+  },
+  {
+    "id": "agenda-003",
+    "title": "Posyandu Balita & Lansia",
+    "date": "25",
+    "month": "Agu",
+    "year": "2026",
+    "time": "08:00 - 11:00 WIB",
+    "location": "Polindes",
+    "type": "Kesehatan",
+    "status": "Dijadwalkan",
+    "description": "Pelayanan posyandu rutin bulanan untuk balita dan lansia, termasuk penimbangan dan imunisasi."
+  },
+  {
+    "id": "agenda-004",
+    "title": "Pembagian BLT Dana Desa",
+    "date": "01",
+    "month": "Sep",
+    "year": "2026",
+    "time": "08:30 - Selesai",
+    "location": "Balai Desa Sedaraja",
+    "type": "Sosial",
+    "status": "Dijadwalkan",
+    "description": "Pembagian BLT Dana Desa periode Agustus 2026 kepada penerima manfaat yang berhak."
+  }
+]

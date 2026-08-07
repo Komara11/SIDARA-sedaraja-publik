@@ -1,0 +1,56 @@
+[
+  {
+    "id": "lembaga-001",
+    "name": "Pemerintah Desa",
+    "desc": "Struktur organisasi dan aparatur pemerintahan desa.",
+    "icon": "account_balance",
+    "color": "primary",
+    "ketua": "Bpk. H. Sudirman",
+    "anggota": 15
+  },
+  {
+    "id": "lembaga-002",
+    "name": "BPD",
+    "desc": "Badan Permusyawaratan Desa sebagai lembaga legislatif.",
+    "icon": "gavel",
+    "color": "secondary",
+    "ketua": "Bpk. H. Maman Abdurrahman",
+    "anggota": 7
+  },
+  {
+    "id": "lembaga-003",
+    "name": "LPM",
+    "desc": "Lembaga Pemberdayaan Masyarakat untuk pembangunan.",
+    "icon": "diversity_3",
+    "color": "tertiary",
+    "ketua": "Bpk. Syaepudin",
+    "anggota": 12
+  },
+  {
+    "id": "lembaga-004",
+    "name": "PKK",
+    "desc": "Pemberdayaan Kesejahteraan Keluarga.",
+    "icon": "family_restroom",
+    "color": "primary",
+    "ketua": "Ibu Hj. Nani Rohaeni",
+    "anggota": 25
+  },
+  {
+    "id": "lembaga-005",
+    "name": "Karang Taruna",
+    "desc": "Wadah pengembangan generasi muda desa.",
+    "icon": "sports_kabaddi",
+    "color": "secondary",
+    "ketua": "Sdr. Rian Firmansyah",
+    "anggota": 45
+  },
+  {
+    "id": "lembaga-006",
+    "name": "BUMDes",
+    "desc": "Badan Usaha Milik Desa untuk ekonomi kreatif.",
+    "icon": "storefront",
+    "color": "tertiary",
+    "ketua": "Bpk. Usep Setiawan",
+    "anggota": 5
+  }
+]

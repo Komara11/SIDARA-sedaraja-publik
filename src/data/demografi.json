@@ -1,0 +1,24 @@
+{
+  "total": 3450,
+  "lakiLaki": 1780,
+  "perempuan": 1670,
+  "kk": 1120,
+  "usia": [
+    { "name": "0-14 Thn", "value": 850, "fill": "#10b981" },
+    { "name": "15-64 Thn", "value": 2100, "fill": "#0ea5e9" },
+    { "name": ">64 Thn", "value": 500, "fill": "#f59e0b" }
+  ],
+  "pendidikan": [
+    { "name": "SD", "value": 30, "fill": "#10b981" },
+    { "name": "SMP", "value": 25, "fill": "#0ea5e9" },
+    { "name": "SMA", "value": 35, "fill": "#8b5cf6" },
+    { "name": "PT", "value": 10, "fill": "#f43f5e" }
+  ],
+  "pekerjaan": [
+    { "name": "Petani", "value": 45, "fill": "#10b981" },
+    { "name": "Wiraswasta", "value": 20, "fill": "#f59e0b" },
+    { "name": "Swasta", "value": 15, "fill": "#0ea5e9" },
+    { "name": "PNS", "value": 5, "fill": "#8b5cf6" },
+    { "name": "Lainnya", "value": 15, "fill": "#64748b" }
+  ]
+}

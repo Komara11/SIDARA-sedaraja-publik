@@ -1,0 +1,41 @@
+[
+  {
+    "id": "PG-2026-001",
+    "name": "Budi Santoso",
+    "nik": "3210123456780001",
+    "phone": "081234567001",
+    "category": "Infrastruktur & Fasilitas Umum",
+    "title": "Jalan berlubang di RT 01",
+    "description": "Mohon segera diperbaiki karena sering terjadi kecelakaan kecil. Lubang cukup besar dan berbahaya terutama saat malam hari.",
+    "photo": "",
+    "status": "diproses",
+    "date": "2026-08-07T10:30:00",
+    "response": "baik akan segera dibicarakan dengan bapak kuwu"
+  },
+  {
+    "id": "PG-2026-002",
+    "name": "Siti Aminah",
+    "nik": "3210123456780002",
+    "phone": "081234567002",
+    "category": "Infrastruktur & Fasilitas Umum",
+    "title": "Lampu jalan mati",
+    "description": "Lampu jalan di pertigaan balai desa sudah mati sejak 3 hari yang lalu. Mohon segera diperbaiki karena rawan kecelakaan dan kriminalitas.",
+    "photo": "",
+    "status": "selesai",
+    "date": "2026-08-06T15:45:00",
+    "response": "Sedang dikoordinasikan dengan PLN untuk perbaikan."
+  },
+  {
+    "id": "PG-2026-003",
+    "name": "Andi Wijaya",
+    "nik": "3210123456780003",
+    "phone": "081234567003",
+    "category": "Kebersihan & Lingkungan",
+    "title": "Saluran air tersumbat",
+    "description": "Saluran air di depan gang RT 03 tersumbat dan menyebabkan genangan air saat hujan.",
+    "photo": "",
+    "status": "selesai",
+    "date": "2026-08-05T08:00:00",
+    "response": "Alhamdulillah sudah dibersihkan oleh petugas kemarin sore."
+  }
+]

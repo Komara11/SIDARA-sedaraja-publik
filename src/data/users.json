@@ -1,0 +1,16 @@
+[
+  {
+    "id": "user-001",
+    "username": "admin",
+    "password": "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+    "name": "Admin Desa",
+    "role": "Administrator"
+  },
+  {
+    "id": "user-002",
+    "username": "operator",
+    "password": "b0399d2029f64d445b9d4bec2f8abc0396f3dbf6e3df87a92e3ca4ad28eb3c60",
+    "name": "Operator Desa",
+    "role": "Operator"
+  }
+]

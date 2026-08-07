@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "Bpk. H. Sudirman",
+    "role": "Kepala Desa",
+    "level": 1
+  },
+  {
+    "id": "2",
+    "name": "Ibu Siti Aminah",
+    "role": "Sekretaris Desa",
+    "level": 2
+  },
+  {
+    "id": "3",
+    "name": "Bpk. Rahmat",
+    "role": "Kasi Pemerintahan",
+    "level": 2
+  },
+  {
+    "id": "4",
+    "name": "Bpk. Agus S.",
+    "role": "Kasi Kesejahteraan",
+    "level": 2
+  }
+]

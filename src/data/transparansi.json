@@ -1,0 +1,16 @@
+{
+  "tahun": 2026,
+  "pendapatan": [
+    { "name": "Dana Desa", "amount": 1200, "fill": "#10b981" },
+    { "name": "Alokasi DD", "amount": 450, "fill": "#3b82f6" },
+    { "name": "PADes", "amount": 150, "fill": "#f59e0b" },
+    { "name": "Bantuan", "amount": 200, "fill": "#8b5cf6" }
+  ],
+  "belanja": [
+    { "name": "Pembangunan", "amount": 900, "fill": "#10b981" },
+    { "name": "Pemberdayaan", "amount": 450, "fill": "#3b82f6" },
+    { "name": "Pemerintahan", "amount": 400, "fill": "#f59e0b" },
+    { "name": "Pembinaan", "amount": 200, "fill": "#8b5cf6" },
+    { "name": "Bencana", "amount": 50, "fill": "#f43f5e" }
+  ]
+}

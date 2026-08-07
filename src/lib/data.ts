@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const DATA_DIR = path.join(process.cwd(), '..', 'data');
+const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 
 export async function readData<T>(filename: string): Promise<T> {
   const filePath = path.join(DATA_DIR, filename);
