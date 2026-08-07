@@ -114,7 +114,7 @@ export default function DemografiPage() {
                     <YAxis tick={{fill: '#64748b', fontSize: 12, fontWeight: 500}} axisLine={false} tickLine={false} tickMargin={12} />
                     <Tooltip content={<CustomTooltipBar />} cursor={{fill: '#f8fafc'}} />
                     <Bar dataKey="value" radius={[8, 8, 0, 0]} maxBarSize={80}>
-                      {stats.usia.map((entry, index) => (
+                      {stats.usia.map((entry: any, index: number) => (
                         <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity" />
                       ))}
                     </Bar>
@@ -147,7 +147,7 @@ export default function DemografiPage() {
                         dataKey="value"
                         stroke="none"
                       >
-                        {stats.pendidikan.map((entry, index) => (
+                        {stats.pendidikan.map((entry: any, index: number) => (
                           <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity outline-none" />
                         ))}
                       </Pie>
@@ -180,7 +180,7 @@ export default function DemografiPage() {
                         dataKey="value"
                         stroke="none"
                       >
-                        {stats.pekerjaan.map((entry, index) => (
+                        {stats.pekerjaan.map((entry: any, index: number) => (
                           <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity outline-none" />
                         ))}
                       </Pie>

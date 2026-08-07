@@ -21,8 +21,8 @@ export default function TransparansiPage() {
     );
   }
 
-  const totalPendapatan = apbdesData.pendapatan.reduce((acc, curr) => acc + curr.amount, 0);
-  const totalBelanja = apbdesData.belanja.reduce((acc, curr) => acc + curr.amount, 0);
+  const totalPendapatan = apbdesData.pendapatan.reduce((acc: number, curr: any) => acc + curr.amount, 0);
+  const totalBelanja = apbdesData.belanja.reduce((acc: number, curr: any) => acc + curr.amount, 0);
 
   const formatRupiah = (angka: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -126,7 +126,7 @@ export default function TransparansiPage() {
                   <YAxis hide domain={[0, 'dataMax + 200']} />
                   <Tooltip content={<CustomTooltip />} cursor={{fill: '#f8fafc', radius: 8}} />
                   <Bar dataKey="amount" radius={[8, 8, 8, 8]} maxBarSize={50} animationDuration={1500}>
-                    {apbdesData.pendapatan.map((entry, index) => (
+                    {apbdesData.pendapatan.map((entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
                   </Bar>
@@ -161,7 +161,7 @@ export default function TransparansiPage() {
                   <YAxis hide domain={[0, 'dataMax + 200']} />
                   <Tooltip content={<CustomTooltip />} cursor={{fill: '#f8fafc', radius: 8}} />
                   <Bar dataKey="amount" radius={[8, 8, 8, 8]} maxBarSize={50} animationDuration={1500}>
-                    {apbdesData.belanja.map((entry, index) => (
+                    {apbdesData.belanja.map((entry: any, index: number) => (
                       <Cell key={`cell-${index}`} fill={entry.fill} />
                     ))}
                   </Bar>

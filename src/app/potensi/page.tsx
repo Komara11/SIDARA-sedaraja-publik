@@ -122,7 +122,7 @@ export default function PotensiPage() {
 
                   {/* Dashboard Metrics Grid */}
                   <div className="grid grid-cols-3 gap-4 mt-auto mb-8">
-                    {item.metrics.map((metric, idx) => (
+                    {item.metrics.map((metric: any, idx: number) => (
                       <div key={idx} className="flex flex-col">
                         <span className="font-label-sm text-[11px] text-on-surface-variant mb-1 uppercase tracking-wider font-semibold">{metric.label}</span>
                         <span className="font-title-md text-[15px] text-on-surface font-bold">{metric.value}</span>

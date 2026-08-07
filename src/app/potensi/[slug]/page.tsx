@@ -85,7 +85,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
                   Data & Statistik
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                  {potensi.metrics.map((metric, idx) => (
+                  {potensi.metrics.map((metric: any, idx: number) => (
                     <div key={idx} className="flex flex-col items-center justify-center p-6 text-center bg-surface-container-low rounded-2xl shadow-inner border border-surface-variant/20">
                       <span className="font-label-sm text-[12px] text-on-surface-variant mb-3 uppercase tracking-wider font-semibold">{metric.label}</span>
                       <span className="font-display-md text-3xl text-primary tracking-tight">{metric.value}</span>
