@@ -1,25 +1,25 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from "recharts";
 import { Wallet, ShoppingCart, TrendingUp, ShoppingBag, Info, ShieldCheck } from "lucide-react";
 
 export default function TransparansiPage() {
-  const apbdesData = {
-    tahun: 2026,
-    pendapatan: [
-      { name: "Dana Desa", amount: 1200, fill: "#10b981" }, // emerald-500
-      { name: "Alokasi DD", amount: 450, fill: "#3b82f6" }, // blue-500
-      { name: "PADes", amount: 150, fill: "#f59e0b" },      // amber-500
-      { name: "Bantuan", amount: 200, fill: "#8b5cf6" },    // violet-500
-    ],
-    belanja: [
-      { name: "Pembangunan", amount: 900, fill: "#10b981" },
-      { name: "Pemberdayaan", amount: 450, fill: "#3b82f6" },
-      { name: "Pemerintahan", amount: 400, fill: "#f59e0b" },
-      { name: "Pembinaan", amount: 200, fill: "#8b5cf6" },
-      { name: "Bencana", amount: 50, fill: "#f43f5e" },      // rose-500
-    ]
-  };
+  const [apbdesData, setApbdesData] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/general')
+      .then(res => res.json())
+      .then(data => setApbdesData(data.transparansi));
+  }, []);
+
+  if (!apbdesData) {
+    return (
+      <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen items-center justify-center">
+        <span className="material-symbols-outlined animate-spin text-4xl text-primary">progress_activity</span>
+      </div>
+    );
+  }
 
   const totalPendapatan = apbdesData.pendapatan.reduce((acc, curr) => acc + curr.amount, 0);
   const totalBelanja = apbdesData.belanja.reduce((acc, curr) => acc + curr.amount, 0);
@@ -61,8 +61,8 @@ export default function TransparansiPage() {
             <ShieldCheck className="w-10 h-10" />
           </div>
         </motion.div>
-        <h1 className="font-display-lg text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Transparansi <span className="text-primary">APBDes</span></h1>
-        <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+        <h1 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Transparansi <span className="text-primary">APBDes</span></h1>
+        <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-8 sm:mb-10 text-sm sm:text-base">
           Keterbukaan informasi publik mengenai Anggaran Pendapatan dan Belanja Desa Sedaraja Tahun Anggaran {apbdesData.tahun}.
         </p>
       </section>
@@ -81,8 +81,8 @@ export default function TransparansiPage() {
             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 relative z-10 group-hover:scale-110 transition-transform duration-500">
               <Wallet className="w-8 h-8" />
             </div>
-            <h3 className="font-display-lg text-4xl md:text-5xl text-primary tracking-tight relative z-10">{formatRupiah(totalPendapatan)}</h3>
-            <p className="font-label-sm text-[14px] text-on-surface-variant mt-3 font-semibold tracking-wider uppercase relative z-10">Total Pendapatan</p>
+            <h3 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-primary tracking-tight relative z-10">{formatRupiah(totalPendapatan)}</h3>
+            <p className="font-label-sm text-[12px] sm:text-[14px] text-on-surface-variant mt-3 font-semibold tracking-wider uppercase relative z-10">Total Pendapatan</p>
           </motion.div>
           
           <motion.div 
@@ -95,8 +95,8 @@ export default function TransparansiPage() {
             <div className="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-500 mb-6 relative z-10 group-hover:scale-110 transition-transform duration-500">
               <ShoppingCart className="w-8 h-8" />
             </div>
-            <h3 className="font-display-lg text-4xl md:text-5xl text-rose-500 tracking-tight relative z-10">{formatRupiah(totalBelanja)}</h3>
-            <p className="font-label-sm text-[14px] text-on-surface-variant mt-3 font-semibold tracking-wider uppercase relative z-10">Total Belanja</p>
+            <h3 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-rose-500 tracking-tight relative z-10">{formatRupiah(totalBelanja)}</h3>
+            <p className="font-label-sm text-[12px] sm:text-[14px] text-on-surface-variant mt-3 font-semibold tracking-wider uppercase relative z-10">Total Belanja</p>
           </motion.div>
         </div>
 
@@ -105,9 +105,9 @@ export default function TransparansiPage() {
           <motion.section 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-lg transition-shadow duration-500 border border-surface-variant/30 flex flex-col"
+            className="bg-white p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-lg transition-shadow duration-500 border border-surface-variant/30 flex flex-col overflow-hidden"
           >
             <div className="flex items-center gap-4 mb-10 justify-center">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
@@ -117,7 +117,8 @@ export default function TransparansiPage() {
                 Rincian Pendapatan
               </h3>
             </div>
-            <div className="h-[350px] w-full">
+            <div className="w-full overflow-x-auto hide-scrollbar pb-4">
+              <div className="h-[350px] min-w-[500px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={apbdesData.pendapatan} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -130,7 +131,8 @@ export default function TransparansiPage() {
                     ))}
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+                </ResponsiveContainer>
+              </div>
             </div>
           </motion.section>
 
@@ -138,9 +140,9 @@ export default function TransparansiPage() {
           <motion.section 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="bg-white p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-lg transition-shadow duration-500 border border-surface-variant/30 flex flex-col"
+            className="bg-white p-6 sm:p-8 md:p-10 rounded-[2rem] shadow-sm hover:shadow-lg transition-shadow duration-500 border border-surface-variant/30 flex flex-col overflow-hidden"
           >
             <div className="flex items-center gap-4 mb-10 justify-center">
               <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500">
@@ -150,7 +152,8 @@ export default function TransparansiPage() {
                 Rincian Belanja
               </h3>
             </div>
-            <div className="h-[350px] w-full">
+            <div className="w-full overflow-x-auto hide-scrollbar pb-4">
+              <div className="h-[350px] min-w-[500px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={apbdesData.belanja} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -163,7 +166,8 @@ export default function TransparansiPage() {
                     ))}
                   </Bar>
                 </BarChart>
-              </ResponsiveContainer>
+                </ResponsiveContainer>
+              </div>
             </div>
           </motion.section>
         </div>
@@ -171,9 +175,9 @@ export default function TransparansiPage() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="mt-12 bg-blue-50/50 border border-blue-100 rounded-[2rem] p-8 flex items-start gap-5 text-blue-900 shadow-sm"
+          className="mt-8 sm:mt-12 bg-blue-50/50 border border-blue-100 rounded-[2rem] p-6 sm:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-5 text-blue-900 shadow-sm"
         >
           <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 shrink-0">
             <Info className="w-6 h-6" />

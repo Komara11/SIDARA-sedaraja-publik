@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { Leaf, Mail, Phone, MapPin } from "lucide-react";
+import { readData } from "@/lib/data";
 
-export function Footer() {
+export async function Footer() {
+  let settings: any = {};
+  try {
+    settings = await readData('settings.json');
+  } catch (e) {
+    // Fallback
+  }
+
   return (
     <footer className="bg-gradient-to-b from-primary/95 to-primary text-white w-full mt-auto font-sans">
       <div className="px-margin-mobile md:px-margin-desktop pt-20 pb-12 max-w-container-max mx-auto">
@@ -66,7 +74,7 @@ export function Footer() {
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
                 <p className="font-sans text-sm font-medium text-white/80 leading-relaxed">
-                  Jl. Raya Sedaraja No. 1, Kec. Cingambul, Kabupaten Majalengka, Jawa Barat 45467
+                  {settings?.alamat || "Jl. Raya Sedaraja No. 1, Kec. Cingambul, Kabupaten Majalengka, Jawa Barat 45467"}
                 </p>
               </div>
               <div className="flex flex-col gap-4">
@@ -74,13 +82,13 @@ export function Footer() {
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                     <Phone className="w-5 h-5 text-white" />
                   </div>
-                  <p className="font-sans text-sm font-medium text-white/80">(0233) 1234567</p>
+                  <p className="font-sans text-sm font-medium text-white/80">{settings?.telepon || "(0233) 1234567"}</p>
                 </div>
                 <div className="flex gap-4 items-center">
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                     <Mail className="w-5 h-5 text-white" />
                   </div>
-                  <p className="font-sans text-sm font-medium text-white/80">info@sedaraja.desa.id</p>
+                  <p className="font-sans text-sm font-medium text-white/80">{settings?.email || "info@sedaraja.desa.id"}</p>
                 </div>
               </div>
             </div>

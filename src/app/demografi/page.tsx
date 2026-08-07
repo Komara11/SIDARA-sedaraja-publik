@@ -1,33 +1,25 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell, PieChart, Pie, Legend } from "recharts";
-import { Users, User, UserCheck, Home } from "lucide-react";
+import { Users, User, UserCheck, Home, Loader2 } from "lucide-react";
 
 export default function DemografiPage() {
-  const stats = {
-    total: 3450,
-    lakiLaki: 1780,
-    perempuan: 1670,
-    kk: 1120,
-    usia: [
-      { name: "0-14 Thn", value: 850, fill: "#10b981" },
-      { name: "15-64 Thn", value: 2100, fill: "#0ea5e9" },
-      { name: ">64 Thn", value: 500, fill: "#f59e0b" },
-    ],
-    pendidikan: [
-      { name: "SD", value: 30, fill: "#10b981" },
-      { name: "SMP", value: 25, fill: "#0ea5e9" },
-      { name: "SMA", value: 35, fill: "#8b5cf6" },
-      { name: "PT", value: 10, fill: "#f43f5e" },
-    ],
-    pekerjaan: [
-      { name: "Petani", value: 45, fill: "#10b981" },
-      { name: "Wiraswasta", value: 20, fill: "#f59e0b" },
-      { name: "Swasta", value: 15, fill: "#0ea5e9" },
-      { name: "PNS", value: 5, fill: "#8b5cf6" },
-      { name: "Lainnya", value: 15, fill: "#64748b" },
-    ]
-  };
+  const [stats, setStats] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/demografi')
+      .then(res => res.json())
+      .then(data => setStats(data));
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen items-center justify-center">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    );
+  }
 
   const CustomTooltipBar = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -67,7 +59,7 @@ export default function DemografiPage() {
         <div className="flex flex-col gap-12 lg:gap-16">
           
           {/* Top Stats Overview */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {[
               { label: "Total Penduduk", value: stats.total, icon: Users, color: "text-primary" },
               { label: "Laki-laki", value: stats.lakiLaki, icon: User, color: "text-blue-500" },
@@ -78,15 +70,15 @@ export default function DemografiPage() {
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: "easeOut" }}
-                className="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 border border-surface-variant/30 flex flex-col items-start relative overflow-hidden group"
+                className="bg-white p-5 sm:p-6 md:p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 border border-surface-variant/30 flex flex-col items-start relative overflow-hidden group"
               >
                 <div className={`w-14 h-14 rounded-2xl bg-surface-container-low flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 ${stat.color}`}>
                   <stat.icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-display-lg text-4xl text-on-surface tracking-tight mb-2">{stat.value.toLocaleString('id-ID')}</h3>
-                <p className="font-label-sm text-[14px] text-on-surface-variant font-semibold">{stat.label}</p>
+                <h3 className="font-display-lg text-3xl sm:text-4xl text-on-surface tracking-tight mb-2 z-10 relative">{stat.value.toLocaleString('id-ID')}</h3>
+                <p className="font-label-sm text-[12px] sm:text-[14px] text-on-surface-variant font-semibold z-10 relative">{stat.label}</p>
                 
                 {/* Decorative blur */}
                 <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-surface-container-low rounded-full blur-2xl opacity-50 group-hover:bg-primary/5 transition-colors duration-500" />
@@ -113,7 +105,8 @@ export default function DemografiPage() {
                   Diperbarui 2024
                 </div>
               </div>
-              <div className="h-[300px] w-full mt-4">
+              <div className="w-full overflow-x-auto hide-scrollbar mt-4 pb-4">
+                <div className="h-[300px] min-w-[500px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={stats.usia} margin={{ top: 20, right: 10, left: -20, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -127,6 +120,7 @@ export default function DemografiPage() {
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
+                </div>
               </div>
             </motion.section>
 

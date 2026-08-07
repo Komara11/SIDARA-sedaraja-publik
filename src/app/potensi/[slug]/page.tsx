@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, TreePine, Wheat, Store, Fish, Info, Phone, Activity, CheckCircle2, Factory } from "lucide-react";
+import { readData } from "@/lib/data";
 
 const getIconForCategory = (category: string) => {
   if (category === "Wisata") return <TreePine className="w-5 h-5" />;
@@ -10,94 +11,18 @@ const getIconForCategory = (category: string) => {
   return <Info className="w-5 h-5" />;
 };
 
-const getPotensiData = (slug: string) => {
-  const dummyPotensi = {
-    "bukit-pamoroan": {
-      title: "Bukit Pamoroan",
-      category: "Wisata",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEnzmyY2bIrPcsXULB4NN3558EDj24ImSvxrrtM6MHxHC7JrF-QxdNJJQ4V062qQoMbD95ZD_6FWHYrwIGrWz9XBbwXf56IHN6GGgfKH70RLJebMEGXMgaAe6Rl3Kyet2clLy9QRqjZWeb9laIyFYJCEjE77mwYOId6yDXLkJxv76CRiMZ1sJCcEqQYxFSo_YAXVyjuqeGhgBeI6a5HNrGz_m_8EOmqG5vl-hbMKffxIj_6xG0uI4i",
-      description: "Destinasi wisata alam unggulan dengan pemandangan pegunungan yang menakjubkan, area perkemahan yang luas, dan spot foto matahari terbit yang ikonik. Ideal untuk rekreasi keluarga dan pencinta alam yang mencari ketenangan. Kami terus mengembangkan area ini dengan menambahkan fasilitas MCK yang bersih dan jalur akses yang lebih aman bagi kendaraan roda dua maupun roda empat.",
-      facilities: ["Camping Ground", "Spot Foto", "Fasilitas Toilet", "Area Kuliner"],
-      contact: "BUMDes Sedaraja (0812-3456-7890)",
-      metrics: [
-        { label: "Pengunjung/Bulan", value: "500+" },
-        { label: "Kapasitas Tenda", value: "50 Unit" },
-        { label: "Spot Foto", value: "Tersedia" },
-      ],
-      status: "Buka"
-    },
-    "padi-sawah": {
-      title: "Padi Sawah",
-      category: "Pertanian",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDEUtpJjAbhg6kkhC5rgRhXnU_7ujjec_KvHrsXqLQVJAO2hlagg5yIV88D_OJqSeGL0ZvSXs3veB77jHFC-XAdtC2QFqMoSJLmuRYU-1wqto65XeX2PRMYFUP7S5M1HIeS3nf3r1uT5rCTfZXFLUoeQyv6JiXuJ1I-td9BUa-NSW_ilzrCqQQvpUuldP848y8Z4YYXeIlYBwjInCzwWNt8utMmRQ_l9T3CrSjAMOgKKth-6PxcEsGO",
-      description: "Sektor penyumbang utama perekonomian desa dengan sistem irigasi teknis yang terkelola dengan baik. Luas lahan mencapai 50 hektar dengan musim panen utama pada bulan April hingga Mei. Padi yang dihasilkan utamanya adalah varietas unggul yang tahan terhadap hama dan cuaca ekstrem.",
-      facilities: ["Irigasi Teknis", "Lumbung Desa", "Koperasi Tani", "Traktor Komunal"],
-      contact: "Ketua Gapoktan (0821-1122-3344)",
-      metrics: [
-        { label: "Luas Lahan", value: "50 Ha" },
-        { label: "Produksi/Tahun", value: "300 Ton" },
-        { label: "Stok Gudang", value: "45 Ton" },
-      ],
-      status: "Masa Panen"
-    },
-    "kopi-sedaraja": {
-      title: "Kopi Sedaraja",
-      category: "UMKM",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjd7AD5dSZ4FldI_MDuhMSMfKLISG8WHN2kzym_LZIQokz7F0o8wRiwTVGcCmIKDqUNo4RFURxq6rL5mxepfzlwXu2H1h4ZM65Oi8QedYwDFH_beSTTEcg3nBqrarRJTo6s83u_zilLvYlpHQyew7wuG8mrrfjimx3K9CkVXg6-nXEkCAgGgvzEnj4p_a17siPcoxjU5AdALPv9kWLDtL4bfDb5mHVsARfQr48f1NtID7KaAABvkRW",
-      description: "Biji kopi robusta pilihan yang dipetik langsung dari kebun warga, disangrai dengan metode tradisional menghasilkan aroma khas. Produk ini telah mendapatkan izin PIRT dan dikemas menggunakan pouch modern yang menjaga kesegaran kopi.",
-      facilities: ["Roasting Tradisional", "Packaging Modern", "Pesan Antar"],
-      contact: "Bpk. Andi Susanto (0855-6677-8899)",
-      metrics: [
-        { label: "Pelaku UMKM", value: "12 Orang" },
-        { label: "Produksi/Bulan", value: "200 Kg" },
-        { label: "Stok Produk", value: "15 Kg" },
-      ],
-      status: "Tersedia"
-    },
-    "ikan-nila": {
-      title: "Budidaya Ikan Nila",
-      category: "Perikanan",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFRi5bNXm3S0FT8MGpA_eKnCVvSwTYJ9a0rNnZE-YZ5WRzWWdq4hSq8Q8ZETw43PligIe4SyIVDmW5MOox8vCaR59M94Sa2LyAbkg1kHIEuCaFVC4d6jVjL1mbVtllzJm0cI-45FjK1E4Rywb4Up76o_TdhsHAfCEQbkI2AtKNw9-cwi5nIQwdF42Aj99BF_3gW2RD-Ssy4fhk1_s4PwyVF84DZoz5SJQzPmbqfErSsjd8h49ChmBF",
-      description: "Kolam air deras yang memanfaatkan aliran sungai jernih pegunungan, menghasilkan ikan konsumsi berkualitas tinggi. Terdapat sekitar 15 kolam aktif yang dikelola oleh kelompok pembudidaya ikan (Pokdakan) setempat.",
-      facilities: ["Kolam Air Deras", "Benih Unggul", "Pakan Mandiri"],
-      contact: "Ketua Pokdakan (0833-4455-6677)",
-      metrics: [
-        { label: "Jumlah Kolam", value: "15 Unit" },
-        { label: "Produksi/Tahun", value: "120 Ton" },
-        { label: "Stok Siap Jual", value: "5 Ton" },
-      ],
-      status: "Tersedia"
-    },
-    "jagung-manis": {
-      title: "Jagung Manis",
-      category: "Pertanian",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDUjI8Tg4v3XRe6CPqxu87V4sa6tG25mR3E0tY70cpjsFchdsry14z0ILYsXaLgckrRPA0C8sj6HDKBIt8_yrWAU0a59iE-VfbclOdQmWOwEzNdZig55fAwzvCHh-48FONpw6QopoWupXuHDR6qL9UoReoAHp0bP33dBpY6tdEhUIG-F-Y7JIgix9rB32ZPjvXj0ZPtJLENgDa-lfckOSSua6vY4d_FH0YaseyFj0RG4BLILFPxhvv_",
-      description: "Ditanam pada area tegalan sebagai tanaman sela yang memberikan nilai ekonomi tambahan yang signifikan bagi petani. Jagung hibrida ini memiliki produktivitas tinggi dan sebagian besar dipasok untuk kebutuhan industri pakan ternak di kabupaten.",
-      facilities: ["Lahan Tegalan", "Alat Pipil Jagung", "Gudang Penyimpanan"],
-      contact: "Gapoktan Sedaraja (0821-1122-3344)",
-      metrics: [
-        { label: "Luas Lahan", value: "20 Ha" },
-        { label: "Produksi/Tahun", value: "100 Ton" },
-        { label: "Stok Gudang", value: "Habis" },
-      ],
-      status: "Masa Tanam"
-    }
-  };
-  return dummyPotensi[slug as keyof typeof dummyPotensi] || {
-    title: slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-    category: "Inventori",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDEUtpJjAbhg6kkhC5rgRhXnU_7ujjec_KvHrsXqLQVJAO2hlagg5yIV88D_OJqSeGL0ZvSXs3veB77jHFC-XAdtC2QFqMoSJLmuRYU-1wqto65XeX2PRMYFUP7S5M1HIeS3nf3r1uT5rCTfZXFLUoeQyv6JiXuJ1I-td9BUa-NSW_ilzrCqQQvpUuldP848y8Z4YYXeIlYBwjInCzwWNt8utMmRQ_l9T3CrSjAMOgKKth-6PxcEsGO", 
-    description: "Informasi detail mengenai potensi ini sedang dalam proses pembaruan data oleh tim redaksi desa. Kami akan segera memperbarui konten ini agar lebih informatif.",
-    facilities: ["Informasi belum tersedia"],
-    contact: "Admin Desa Sedaraja (Hubungi Balai Desa)",
-    metrics: [],
-    status: "Data Belum Tersedia"
-  };
+const getPotensiData = async (slug: string) => {
+  try {
+    const allPotensi = await readData<any[]>('potensi.json');
+    return allPotensi.find((p: any) => p.id === slug || p.slug === slug) || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 export default async function PotensiDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const potensi = getPotensiData(resolvedParams.slug);
+  const potensi = await getPotensiData(resolvedParams.slug);
 
   if (!potensi) {
     notFound();
@@ -112,8 +37,14 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
           Kembali ke Eksplorasi Potensi
         </Link>
         
-        <div className="w-full aspect-video md:aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 shadow-xl relative group">
-          <img src={potensi.image} alt={potensi.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+        <div className="w-full aspect-video md:aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 shadow-xl relative group bg-surface-container-low">
+          {potensi.image ? (
+            <img src={potensi.image} alt={potensi.title || potensi.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="material-symbols-outlined text-6xl text-on-surface-variant/30">image</span>
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           
           <div className="absolute top-6 left-6 bg-white/20 backdrop-blur-md border border-white/30 text-white px-5 py-2 rounded-full font-label-sm text-[14px] font-semibold flex items-center gap-2 shadow-lg">
@@ -132,7 +63,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
           </div>
 
           <div className="absolute bottom-8 left-8 right-8">
-            <h1 className="font-display-lg text-4xl md:text-6xl text-white tracking-tight leading-tight drop-shadow-lg mb-2">{potensi.title}</h1>
+            <h1 className="font-display-lg text-4xl md:text-6xl text-white tracking-tight leading-tight drop-shadow-lg mb-2">{potensi.title || potensi.name}</h1>
           </div>
         </div>
 
@@ -140,7 +71,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
           
           <div className="lg:col-span-2 flex flex-col gap-10">
             <div>
-              <h2 className="font-title-lg text-2xl text-on-surface mb-4 font-semibold tracking-tight">Tentang {potensi.title}</h2>
+              <h2 className="font-title-lg text-2xl text-on-surface mb-4 font-semibold tracking-tight">Tentang {potensi.title || potensi.name}</h2>
               <p className="font-body-lg text-on-surface-variant leading-relaxed whitespace-pre-wrap">
                 {potensi.description}
               </p>
@@ -173,7 +104,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
                 Fasilitas & Layanan
               </h3>
               <ul className="flex flex-col gap-4">
-                {potensi.facilities.map((fasilitas, idx) => (
+                {(potensi.facilities || ["Informasi belum tersedia"]).map((fasilitas: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-3 font-body-lg text-on-surface-variant">
                     <CheckCircle2 className="w-6 h-6 text-emerald-500 shrink-0 mt-0.5" />
                     <span className="font-medium">{fasilitas}</span>
@@ -192,7 +123,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
                 Tertarik untuk mengetahui lebih lanjut atau menjalin kerja sama? Silakan hubungi pengelola terkait.
               </p>
               <div className="bg-white/20 backdrop-blur-md p-4 rounded-xl font-label-md flex items-center gap-3 font-bold break-all relative z-10 border border-white/30">
-                {potensi.contact}
+                {potensi.contact || "Hubungi Admin Desa (0233-123456)"}
               </div>
             </div>
             

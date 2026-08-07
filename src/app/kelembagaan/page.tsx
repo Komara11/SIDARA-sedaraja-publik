@@ -1,50 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
-import { Building2, Handshake, Heart, Users, Store, User, Users as UsersIcon } from "lucide-react";
-
+import { useState, useEffect } from "react";
+import { User, Users as UsersIcon } from "lucide-react";
 export default function KelembagaanPage() {
-  const lembaga = [
-    {
-      nama: "BPD",
-      kepanjangan: "Badan Permusyawaratan Desa",
-      deskripsi: "Lembaga perwujudan demokrasi dalam penyelenggaraan pemerintahan desa. BPD berfungsi menetapkan Peraturan Desa bersama Kepala Desa, menampung dan menyalurkan aspirasi masyarakat.",
-      icon: Building2,
-      ketua: "Bpk. H. Maman Abdurrahman",
-      anggota: 7
-    },
-    {
-      nama: "LPM",
-      kepanjangan: "Lembaga Pemberdayaan Masyarakat",
-      deskripsi: "Lembaga yang dibentuk atas prakarsa masyarakat sebagai mitra pemerintah desa dalam menampung dan mewujudkan aspirasi serta kebutuhan masyarakat di bidang pembangunan.",
-      icon: Handshake,
-      ketua: "Bpk. Syaepudin",
-      anggota: 12
-    },
-    {
-      nama: "PKK",
-      kepanjangan: "Pemberdayaan Kesejahteraan Keluarga",
-      deskripsi: "Organisasi kemasyarakatan yang memberdayakan wanita untuk turut berpartisipasi dalam pembangunan Indonesia. Berfokus pada kesejahteraan dan program kesehatan keluarga.",
-      icon: Heart,
-      ketua: "Ibu Hj. Nani Rohaeni",
-      anggota: 25
-    },
-    {
-      nama: "Karang Taruna",
-      kepanjangan: "Karang Taruna Tunas Harapan",
-      deskripsi: "Organisasi kepemudaan yang dibina untuk mengembangkan potensi generasi muda, serta menjadi penggerak kegiatan sosial, olahraga, dan kesenian di lingkungan desa.",
-      icon: Users,
-      ketua: "Sdr. Rian Firmansyah",
-      anggota: 45
-    },
-    {
-      nama: "BUMDes",
-      kepanjangan: "Badan Usaha Milik Desa",
-      deskripsi: "Lembaga usaha desa yang dikelola oleh masyarakat dan pemerintahan desa dalam upaya memperkuat perekonomian desa dan dibentuk berdasarkan kebutuhan dan potensi desa.",
-      icon: Store,
-      ketua: "Bpk. Usep Setiawan",
-      anggota: 5
-    }
-  ];
+  const [lembaga, setLembaga] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/kelembagaan')
+      .then(res => res.json())
+      .then(data => setLembaga(data));
+  }, []);
 
   return (
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
@@ -66,21 +31,21 @@ export default function KelembagaanPage() {
             >
               {/* Decorative Background Icon */}
               <div className="absolute -top-8 -right-8 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-all duration-700 group-hover:rotate-12 group-hover:scale-110 pointer-events-none">
-                <item.icon className="w-48 h-48 text-primary" />
+                <span className="material-symbols-outlined text-[150px] text-primary">{item.icon}</span>
               </div>
               
               <div className="flex items-center gap-5 mb-8 relative z-10">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-500 shrink-0">
-                  <item.icon className="w-8 h-8" />
+                  <span className="material-symbols-outlined text-[32px]">{item.icon}</span>
                 </div>
                 <div>
-                  <h2 className="font-display-lg text-2xl text-on-surface tracking-tight leading-none mb-2">{item.nama}</h2>
-                  <p className="font-label-sm text-[13px] text-primary font-semibold line-clamp-1">{item.kepanjangan}</p>
+                  <h2 className="font-display-lg text-2xl text-on-surface tracking-tight leading-none mb-2">{item.name}</h2>
+                  <p className="font-label-sm text-[13px] text-primary font-semibold line-clamp-1">{item.name}</p>
                 </div>
               </div>
               
               <p className="font-body-lg text-on-surface-variant leading-relaxed mb-10 flex-grow relative z-10">
-                {item.deskripsi}
+                {item.desc}
               </p>
               
               <div className="mt-auto pt-6 border-t border-surface-variant/50 flex flex-col gap-4 relative z-10">

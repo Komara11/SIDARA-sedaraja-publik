@@ -7,6 +7,12 @@ export default function PengaduanPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [category, setCategory] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  const [name, setName] = useState("");
+  const [nik, setNik] = useState("");
+  const [phone, setPhone] = useState("");
+  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const categories = [
     { id: "infrastruktur", label: "Infrastruktur & Fasilitas Umum" },
@@ -16,17 +22,39 @@ export default function PengaduanPage() {
     { id: "lainnya", label: "Lainnya / Aspirasi Umum" }
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!category) {
       alert("Silakan pilih kategori laporan terlebih dahulu.");
       return;
     }
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setCategory("");
-    }, 4000);
+    
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/pengaduan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, nik, phone, category, description })
+      });
+      
+      if (res.ok) {
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setCategory("");
+          setName("");
+          setNik("");
+          setPhone("");
+          setDescription("");
+        }, 4000);
+      } else {
+        alert("Gagal mengirim laporan. Silakan coba lagi.");
+      }
+    } catch {
+      alert("Terjadi kesalahan jaringan.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -92,6 +120,8 @@ export default function PengaduanPage() {
                 <input 
                   type="text" 
                   required 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
                   placeholder="Masukkan nama lengkap Anda"
                 />
@@ -102,6 +132,8 @@ export default function PengaduanPage() {
                   type="text" 
                   required 
                   pattern="[0-9]{16}"
+                  value={nik}
+                  onChange={(e) => setNik(e.target.value)}
                   className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
                   placeholder="16 Digit NIK"
                 />
@@ -114,6 +146,8 @@ export default function PengaduanPage() {
                 <input 
                   type="tel" 
                   required 
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
                   placeholder="Contoh: 081234567890"
                 />
@@ -166,6 +200,8 @@ export default function PengaduanPage() {
               <textarea 
                 required 
                 rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50 resize-none"
                 placeholder="Deskripsikan laporan Anda secara jelas dan rinci..."
               ></textarea>
@@ -186,10 +222,11 @@ export default function PengaduanPage() {
             <div className="pt-6 flex justify-end">
               <button 
                 type="submit"
+                disabled={isLoading}
                 className="bg-primary text-white font-label-sm text-[15px] font-semibold px-8 py-4 rounded-full hover:bg-primary/90 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3 w-full md:w-auto"
               >
-                Kirim Laporan
-                <Send className="w-4 h-4" />
+                {isLoading ? "Mengirim..." : "Kirim Laporan"}
+                {!isLoading && <Send className="w-4 h-4" />}
               </button>
             </div>
           </form>

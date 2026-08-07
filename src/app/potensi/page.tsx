@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -11,73 +11,13 @@ export default function PotensiPage() {
 
   const filters = ["Semua", "Pertanian", "Perikanan", "Wisata", "UMKM"];
 
-  const inventoryData = [
-    {
-      id: "padi-sawah",
-      name: "Padi Sawah",
-      category: "Pertanian",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDEUtpJjAbhg6kkhC5rgRhXnU_7ujjec_KvHrsXqLQVJAO2hlagg5yIV88D_OJqSeGL0ZvSXs3veB77jHFC-XAdtC2QFqMoSJLmuRYU-1wqto65XeX2PRMYFUP7S5M1HIeS3nf3r1uT5rCTfZXFLUoeQyv6JiXuJ1I-td9BUa-NSW_ilzrCqQQvpUuldP848y8Z4YYXeIlYBwjInCzwWNt8utMmRQ_l9T3CrSjAMOgKKth-6PxcEsGO",
-      metrics: [
-        { label: "Luas Lahan", value: "50 Ha" },
-        { label: "Produksi", value: "300 Ton" },
-        { label: "Stok Gudang", value: "45 Ton" },
-      ],
-      status: "Masa Panen",
-      description: "Komoditas utama penyumbang perekonomian desa dengan sistem irigasi teknis yang terkelola dengan baik."
-    },
-    {
-      id: "ikan-nila",
-      name: "Budidaya Ikan Nila",
-      category: "Perikanan",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCFRi5bNXm3S0FT8MGpA_eKnCVvSwTYJ9a0rNnZE-YZ5WRzWWdq4hSq8Q8ZETw43PligIe4SyIVDmW5MOox8vCaR59M94Sa2LyAbkg1kHIEuCaFVC4d6jVjL1mbVtllzJm0cI-45FjK1E4Rywb4Up76o_TdhsHAfCEQbkI2AtKNw9-cwi5nIQwdF42Aj99BF_3gW2RD-Ssy4fhk1_s4PwyVF84DZoz5SJQzPmbqfErSsjd8h49ChmBF",
-      metrics: [
-        { label: "Jumlah Kolam", value: "15 Unit" },
-        { label: "Produksi", value: "120 Ton" },
-        { label: "Siap Jual", value: "5 Ton" },
-      ],
-      status: "Tersedia",
-      description: "Kolam air deras yang memanfaatkan aliran sungai jernih pegunungan, menghasilkan ikan konsumsi berkualitas tinggi."
-    },
-    {
-      id: "kopi-sedaraja",
-      name: "Kopi Sedaraja",
-      category: "UMKM",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDjd7AD5dSZ4FldI_MDuhMSMfKLISG8WHN2kzym_LZIQokz7F0o8wRiwTVGcCmIKDqUNo4RFURxq6rL5mxepfzlwXu2H1h4ZM65Oi8QedYwDFH_beSTTEcg3nBqrarRJTo6s83u_zilLvYlpHQyew7wuG8mrrfjimx3K9CkVXg6-nXEkCAgGgvzEnj4p_a17siPcoxjU5AdALPv9kWLDtL4bfDb5mHVsARfQr48f1NtID7KaAABvkRW",
-      metrics: [
-        { label: "Pelaku UMKM", value: "12 Orang" },
-        { label: "Produksi/Bln", value: "200 Kg" },
-        { label: "Stok Produk", value: "15 Kg" },
-      ],
-      status: "Tersedia",
-      description: "Biji kopi robusta pilihan yang dipetik langsung dari kebun warga, disangrai dengan metode tradisional."
-    },
-    {
-      id: "jagung-manis",
-      name: "Jagung Manis",
-      category: "Pertanian",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDUjI8Tg4v3XRe6CPqxu87V4sa6tG25mR3E0tY70cpjsFchdsry14z0ILYsXaLgckrRPA0C8sj6HDKBIt8_yrWAU0a59iE-VfbclOdQmWOwEzNdZig55fAwzvCHh-48FONpw6QopoWupXuHDR6qL9UoReoAHp0bP33dBpY6tdEhUIG-F-Y7JIgix9rB32ZPjvXj0ZPtJLENgDa-lfckOSSua6vY4d_FH0YaseyFj0RG4BLILFPxhvv_",
-      metrics: [
-        { label: "Luas Lahan", value: "20 Ha" },
-        { label: "Produksi", value: "100 Ton" },
-        { label: "Stok Gudang", value: "Habis" },
-      ],
-      status: "Masa Tanam",
-      description: "Ditanam pada area tegalan sebagai tanaman sela yang memberikan nilai ekonomi tambahan yang signifikan."
-    },
-    {
-      id: "bukit-pamoroan",
-      name: "Bukit Pamoroan",
-      category: "Wisata",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBEnzmyY2bIrPcsXULB4NN3558EDj24ImSvxrrtM6MHxHC7JrF-QxdNJJQ4V062qQoMbD95ZD_6FWHYrwIGrWz9XBbwXf56IHN6GGgfKH70RLJebMEGXMgaAe6Rl3Kyet2clLy9QRqjZWeb9laIyFYJCEjE77mwYOId6yDXLkJxv76CRiMZ1sJCcEqQYxFSo_YAXVyjuqeGhgBeI6a5HNrGz_m_8EOmqG5vl-hbMKffxIj_6xG0uI4i",
-      metrics: [
-        { label: "Pengunjung", value: "500+/bln" },
-        { label: "Kapasitas", value: "50 Tenda" },
-        { label: "Spot Foto", value: "Tersedia" },
-      ],
-      status: "Buka",
-      description: "Destinasi wisata alam unggulan dengan pemandangan pegunungan yang menakjubkan dan area perkemahan yang luas."
-    }
-  ];
+  const [inventoryData, setInventoryData] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/potensi')
+      .then(res => res.json())
+      .then(data => setInventoryData(data));
+  }, []);
 
   const filteredData = inventoryData.filter(item => {
     const matchesFilter = activeFilter === "Semua" || item.category === activeFilter;
@@ -90,8 +30,8 @@ export default function PotensiPage() {
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen pb-32">
       {/* Header & Filters Section */}
       <section className="pt-16 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
-        <h1 className="font-display-lg text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Katalog <span className="text-primary">Potensi Desa</span></h1>
-        <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+        <h1 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Katalog <span className="text-primary">Potensi Desa</span></h1>
+        <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-8 sm:mb-10 text-sm sm:text-base">
           Eksplorasi komoditas unggulan, produk lokal, dan destinasi wisata yang ada di wilayah Desa Sedaraja.
         </p>
 
@@ -114,7 +54,7 @@ export default function PotensiPage() {
           </div>
           
           {/* Filter Chips */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex overflow-x-auto md:flex-wrap items-center md:justify-center gap-2 sm:gap-3 pb-2 snap-x hide-scrollbar">
             {filters.map((filter) => (
               <button 
                 key={filter}
@@ -146,7 +86,7 @@ export default function PotensiPage() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="bg-white rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 flex flex-col h-full overflow-hidden group border border-surface-variant/30"
               >
-                <div className="h-64 relative overflow-hidden">
+                <div className="h-56 sm:h-60 md:h-64 relative overflow-hidden">
                   <img 
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-out" 
                     src={item.image}

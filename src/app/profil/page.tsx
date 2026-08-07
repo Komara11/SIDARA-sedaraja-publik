@@ -1,8 +1,24 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { History, Target } from "lucide-react";
+import { History, Target, Loader2 } from "lucide-react";
 
 export default function ProfilPage() {
+  const [aparatur, setAparatur] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/aparatur')
+      .then(res => res.json())
+      .then(data => {
+        setAparatur(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const kepalaDesa = aparatur.find(a => a.level === 1);
+  const others = aparatur.filter(a => a.level > 1).sort((a, b) => a.level - b.level);
   return (
     <div className="flex flex-col flex-grow w-full bg-surface-bright">
       
@@ -134,19 +150,21 @@ export default function ProfilPage() {
           
           <div className="flex flex-col items-center">
             {/* Kepala Desa */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="flex flex-col items-center z-10 relative group"
-            >
-              <div className="w-36 h-36 rounded-full bg-white shadow-xl flex items-center justify-center mb-6 overflow-hidden border-4 border-white group-hover:border-primary/20 transition-all duration-300">
-                <span className="material-symbols-outlined text-[64px] text-surface-variant">person</span>
-              </div>
-              <h3 className="font-title-md text-2xl text-on-surface font-semibold mb-1">Bpk. H. Sudirman</h3>
-              <p className="font-label-sm text-[15px] text-primary uppercase tracking-widest font-semibold">Kepala Desa</p>
-            </motion.div>
+            {kepalaDesa && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="flex flex-col items-center z-10 relative group"
+              >
+                <div className="w-36 h-36 rounded-full bg-white shadow-xl flex items-center justify-center mb-6 overflow-hidden border-4 border-white group-hover:border-primary/20 transition-all duration-300">
+                  <span className="material-symbols-outlined text-[64px] text-surface-variant">person</span>
+                </div>
+                <h3 className="font-title-md text-2xl text-on-surface font-semibold mb-1">{kepalaDesa.name}</h3>
+                <p className="font-label-sm text-[15px] text-primary uppercase tracking-widest font-semibold">{kepalaDesa.role}</p>
+              </motion.div>
+            )}
 
             {/* Vertical line connecting top to horizontal line */}
             <div className="w-px h-16 bg-surface-variant/80 hidden md:block"></div>
@@ -160,28 +178,28 @@ export default function ProfilPage() {
             </div>
             
             {/* Jajaran Bawah */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full max-w-4xl mt-12 md:mt-16">
-              {[
-                { name: "Ibu Siti Aminah", role: "Sekretaris Desa" },
-                { name: "Bpk. Rahmat", role: "Kasi Pemerintahan" },
-                { name: "Bpk. Agus S.", role: "Kasi Kesejahteraan" }
-              ].map((person, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 + i * 0.1 }}
-                  className="flex flex-col items-center text-center group"
-                >
-                  <div className="w-28 h-28 rounded-full bg-white shadow-lg flex items-center justify-center mb-5 overflow-hidden border-4 border-white group-hover:border-primary/10 transition-all duration-300">
-                    <span className="material-symbols-outlined text-[48px] text-surface-variant">person</span>
-                  </div>
-                  <h3 className="font-title-md text-xl text-on-surface font-semibold mb-1">{person.name}</h3>
-                  <p className="font-label-sm text-[14px] text-on-surface-variant">{person.role}</p>
-                </motion.div>
-              ))}
-            </div>
+            {loading ? (
+              <div className="mt-16 flex justify-center"><Loader2 className="w-8 h-8 text-primary animate-spin" /></div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full max-w-4xl mt-12 md:mt-16">
+                {others.map((person, i) => (
+                  <motion.div 
+                    key={person.id || i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.2 + (i % 3) * 0.1 }}
+                    className="flex flex-col items-center text-center group"
+                  >
+                    <div className="w-28 h-28 rounded-full bg-white shadow-lg flex items-center justify-center mb-5 overflow-hidden border-4 border-white group-hover:border-primary/10 transition-all duration-300">
+                      <span className="material-symbols-outlined text-[48px] text-surface-variant">person</span>
+                    </div>
+                    <h3 className="font-title-md text-xl text-on-surface font-semibold mb-1">{person.name}</h3>
+                    <p className="font-label-sm text-[14px] text-on-surface-variant">{person.role}</p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
