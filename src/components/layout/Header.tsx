@@ -172,7 +172,7 @@ export function Header() {
               open: { height: "auto", opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.1, duration: 0.3, ease: "easeInOut" } },
               closed: { height: 0, opacity: 0, transition: { duration: 0.3, ease: "easeInOut", staggerChildren: 0.05, staggerDirection: -1 } }
             }}
-            className="lg:hidden bg-white/95 backdrop-blur-lg border-t border-surface-variant/50 overflow-hidden shadow-xl"
+            className="lg:hidden bg-transparent backdrop-blur-md overflow-hidden"
           >
              <div className="px-margin-mobile py-6 flex flex-col gap-6">
               {navItems.map((item) => (

@@ -19,7 +19,7 @@ export default function GaleriPage() {
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
       
       {/* Header Spacing */}
-      <div className="pt-16"></div>
+      <div className="pt-28 md:pt-32"></div>
 
       {/* Masonry-like Grid Section */}
       <section className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full pb-32">

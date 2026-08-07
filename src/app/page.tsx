@@ -79,42 +79,42 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-              className="mt-6 flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-[2rem] p-2 shadow-2xl overflow-visible"
+              className="mt-8 flex flex-row items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-2 shadow-2xl overflow-visible max-w-[90vw] md:max-w-none mx-auto overflow-x-auto hide-scrollbar"
             >
               {/* Kolaborasi Text */}
-              <div className="flex flex-col items-center md:items-start px-6 py-3 md:py-0 md:pr-8 md:border-r border-white/20">
-                <span className="font-sans text-[10px] md:text-xs font-bold tracking-[0.25em] text-emerald-400 uppercase mb-1">
+              <div className="flex flex-col items-start pl-4 md:pl-6 pr-3 md:pr-8 border-r border-white/20 shrink-0">
+                <span className="font-sans text-[8px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.25em] text-emerald-400 uppercase mb-0.5 md:mb-1">
                   Kolaborasi
                 </span>
-                <span className="font-sans text-sm md:text-base font-semibold text-white tracking-wide">
+                <span className="font-sans text-[11px] md:text-base font-semibold text-white tracking-wide leading-tight">
                   Ekosistem Digital
                 </span>
               </div>
               
               {/* Logos */}
-              <div className="flex items-center gap-3 md:gap-5 px-4 md:px-6 py-2 md:py-1">
+              <div className="flex items-center gap-2 md:gap-5 px-3 md:px-6 py-1 md:py-1 shrink-0">
                 {/* Logo Kampus */}
-                <div className="relative group w-12 h-12 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-2.5 hover:scale-110 transition-transform cursor-pointer">
+                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1.5 md:p-2.5 hover:scale-110 transition-transform cursor-pointer">
                   <img src="/images/logo_kampus.png" alt="Logo Kampus" className="w-full h-full object-contain" />
                   <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
                     INSTBUNAS
                   </div>
                 </div>
                 
-                <span className="text-white/50 text-xl font-light">+</span>
+                <span className="text-white/50 text-sm md:text-xl font-light">+</span>
                 
                 {/* Logo Desa (Tengah) */}
-                <div className="relative group w-12 h-12 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-2.5 hover:scale-110 transition-transform cursor-pointer text-primary">
-                  <span className="material-symbols-outlined text-[28px] md:text-[32px]">shield</span>
+                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1.5 md:p-2.5 hover:scale-110 transition-transform cursor-pointer text-primary">
+                  <span className="material-symbols-outlined text-[18px] md:text-[32px]">shield</span>
                   <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
                     Desa Sedaraja
                   </div>
                 </div>
 
-                <span className="text-white/50 text-xl font-light">+</span>
+                <span className="text-white/50 text-sm md:text-xl font-light">+</span>
                 
                 {/* Logo KKN */}
-                <div className="relative group w-12 h-12 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-2 hover:scale-110 transition-transform cursor-pointer">
+                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1 md:p-2 hover:scale-110 transition-transform cursor-pointer">
                   <img src="/images/logo_kkn.png" alt="Logo KKN" className="w-full h-full object-contain scale-95" />
                   <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
                     Kuliah Kerja Nyata (KKN)

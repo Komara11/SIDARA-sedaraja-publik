@@ -20,11 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${inter.variable} antialiased h-full`}>
+    <html lang="id" className={`${inter.variable} antialiased h-full overflow-x-hidden`}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full flex flex-col font-sans bg-surface text-on-surface">
+      <body className="min-h-full flex flex-col font-sans bg-surface text-on-surface overflow-x-hidden">
         <Header />
         <main className="flex-grow w-full">
           {children}

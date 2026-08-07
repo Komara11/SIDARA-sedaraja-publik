@@ -29,7 +29,7 @@ export default function PotensiPage() {
   return (
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen pb-32">
       {/* Header & Filters Section */}
-      <section className="pt-16 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
+      <section className="pt-28 md:pt-32 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
         <h1 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Katalog <span className="text-primary">Potensi Desa</span></h1>
         <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-8 sm:mb-10 text-sm sm:text-base">
           Eksplorasi komoditas unggulan, produk lokal, dan destinasi wisata yang ada di wilayah Desa Sedaraja.

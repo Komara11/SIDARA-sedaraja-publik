@@ -50,7 +50,7 @@ export default function TransparansiPage() {
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
       
       {/* Header Section */}
-      <section className="pt-16 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
+      <section className="pt-28 md:pt-32 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

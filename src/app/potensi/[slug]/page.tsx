@@ -29,7 +29,7 @@ export default async function PotensiDetailPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen pt-12 pb-32">
+    <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen pt-28 md:pt-32 pb-32">
       <article className="max-w-6xl w-full mx-auto px-margin-mobile md:px-margin-desktop">
         
         <Link href="/potensi" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-label-md font-semibold mb-8 bg-primary/5 px-4 py-2 rounded-full">

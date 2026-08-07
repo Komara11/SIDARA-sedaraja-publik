@@ -61,7 +61,7 @@ export default function PengaduanPage() {
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
       
       {/* Header Section */}
-      <section className="pt-16 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
+      <section className="pt-28 md:pt-32 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

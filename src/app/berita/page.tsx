@@ -25,7 +25,7 @@ export default function BeritaPage() {
     <div className="flex flex-col flex-grow w-full bg-surface-bright">
       
       {/* Header Spacing */}
-      <div className="pt-16"></div>
+      <div className="pt-28 md:pt-32"></div>
 
       {/* Newsroom Section */}
       <section className="py-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
