@@ -95,8 +95,8 @@ export default function Home() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-30 w-full flex flex-col items-start text-left mt-16">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-3xl">
             <h1 className="font-sans font-extrabold text-3xl sm:text-4xl md:text-5xl text-white mb-4 leading-tight tracking-tight uppercase">
-              Membangun Desa Melalui <br className="hidden sm:block" />
-              <span className="text-emerald-400">Ekosistem Digital Transparan</span>
+              Selamat Datang di Portal Resmi <br className="hidden sm:block" />
+              <span className="text-emerald-400">Desa Sedaraja</span>
             </h1>
             <p className="font-sans text-base sm:text-lg text-white/90 leading-relaxed mb-8 max-w-xl mr-auto">
               Platform terpadu untuk transparansi, pengelolaan potensi lokal, dan pelayanan desa yang berorientasi pada kemajuan berkelanjutan.

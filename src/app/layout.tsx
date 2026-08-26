@@ -10,8 +10,37 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SIDARA - Sistem Informasi dan Data Desa Sedaraja",
-  description: "Platform digital terpadu yang mendukung tata kelola pemerintahan desa berbasis data.",
+  metadataBase: new URL('https://sedaraja.id'),
+  title: {
+    default: "Desa Sedaraja | Website Resmi Pemerintah Desa",
+    template: "%s | Desa Sedaraja"
+  },
+  description: "Website resmi Pemerintah Desa Sedaraja, memuat informasi publik, potensi desa, berita terkini, dan layanan administrasi masyarakat berbasis digital (SIDARA).",
+  keywords: ["Desa Sedaraja", "Sedaraja", "Pemerintah Desa Sedaraja", "Profil Desa Sedaraja", "Kuningan", "Website Desa", "SIDARA"],
+  authors: [{ name: "Pemerintah Desa Sedaraja" }],
+  creator: "Pemerintah Desa Sedaraja",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://sedaraja.id",
+    title: "Desa Sedaraja | Website Resmi",
+    description: "Website resmi Pemerintah Desa Sedaraja. Akses informasi publik, berita, potensi wisata, dan layanan administrasi.",
+    siteName: "Desa Sedaraja",
+    images: [
+      {
+        url: "/images/logo_desa.png",
+        width: 800,
+        height: 600,
+        alt: "Logo Desa Sedaraja",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Desa Sedaraja | Website Resmi",
+    description: "Website resmi Pemerintah Desa Sedaraja. Akses informasi publik, berita, dan potensi wisata.",
+    images: ["/images/logo_desa.png"],
+  },
 };
 
 export default function RootLayout({
