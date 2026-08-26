@@ -11,6 +11,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sedaraja.id'),
+  icons: {
+    icon: '/images/logo_desa.png?v=3',
+    shortcut: '/images/logo_desa.png?v=3',
+    apple: '/images/logo_desa.png?v=3',
+  },
   title: {
     default: "Desa Sedaraja | Website Resmi Pemerintah Desa",
     template: "%s | Desa Sedaraja"
