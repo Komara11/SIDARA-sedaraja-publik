@@ -25,14 +25,14 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ s
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen pt-28 md:pt-32 pb-32">
       <article className="max-w-4xl w-full mx-auto px-margin-mobile md:px-margin-desktop">
         
-        <Link href="/berita" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-label-md font-semibold mb-8 bg-primary/5 px-4 py-2 rounded-full">
+        <Link href="/berita" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-label-md font-semibold mb-8 bg-primary/5 px-4 py-2 rounded">
           <ArrowLeft className="w-5 h-5" />
           Kembali ke Berita
         </Link>
         
         <header className="mb-10">
           <div className="flex flex-wrap items-center gap-4 mb-6">
-            <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full font-label-sm text-[14px] font-semibold flex items-center gap-2">
+            <span className="bg-primary/10 text-primary px-4 py-1.5 rounded font-label-sm text-[14px] font-semibold flex items-center gap-2">
               <Tag className="w-4 h-4" />
               {news.category}
             </span>
@@ -48,7 +48,7 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ s
           <h1 className="font-display-lg text-4xl md:text-5xl lg:text-6xl text-on-surface tracking-tight leading-[1.1]">{news.title}</h1>
         </header>
 
-        <div className="w-full h-[250px] md:h-[400px] rounded-[2rem] overflow-hidden mb-12 shadow-lg relative group bg-surface-container-low">
+        <div className="w-full h-[250px] md:h-[400px] rounded-md overflow-hidden mb-12 shadow-sm border border-surface-variant/30 relative group bg-surface-container-low">
           {news.image ? (
             <img src={news.image} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
           ) : (

@@ -10,7 +10,6 @@ export async function POST(request: Request) {
     const newPengaduan = {
       id: `PG-2026-${String(count).padStart(3, '0')}`,
       name: body.name,
-      nik: body.nik,
       phone: body.phone,
       category: body.category,
       title: body.title || body.category,

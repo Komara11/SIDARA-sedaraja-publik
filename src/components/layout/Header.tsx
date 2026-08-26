@@ -3,25 +3,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, Leaf } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [hData, setHData] = useState<any>(null);
 
-  // Handle scroll effect for glassmorphism
+  const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -32,6 +33,26 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    fetch('/api/halaman').then(r => r.json()).then(d => setHData(d)).catch(() => {});
+  }, []);
+
+  const hdr = hData?.header || {};
+  const brandName = hdr.brandName || "SIDARA";
+  const brandSubtitle = hdr.brandSubtitle || "Sistem Informasi Digital dan Inventarisasi Desa Sedaraja";
+  const logoPath = hdr.logoPath || "/images/logo_desa.png";
+
+  const isHome = pathname === "/";
+  const isTransparent = isHome && !isScrolled && !mobileMenuOpen;
+
+  const headerBgClass = isTransparent 
+    ? "bg-gradient-to-b from-black/60 to-transparent border-transparent" 
+    : "bg-primary border-b border-primary-fixed/50 shadow-md";
+
+  const textTitleClass = "text-white";
+  const textSubtitleClass = "text-white/80";
+  const menuIconClass = "text-white hover:text-white/80";
+
   const navItems = [
     { name: "Home", path: "/" },
     { 
@@ -39,6 +60,7 @@ export function Header() {
       dropdown: true,
       items: [
         { name: "Profil & Sejarah", path: "/profil" },
+        { name: "Struktur Kepengurusan", path: "/pemerintahan" },
         { name: "Kelembagaan", path: "/kelembagaan" },
       ]
     },
@@ -55,98 +77,99 @@ export function Header() {
       name: "Publikasi", 
       dropdown: true,
       items: [
-        { name: "Berita & Agenda", path: "/berita" },
+        { name: "Berita Desa", path: "/berita" },
+        { name: "Agenda Kegiatan", path: "/agenda" },
+        { name: "Informasi Resmi", path: "/informasi-resmi" },
         { name: "Galeri", path: "/galeri" },
       ]
     },
+    { 
+      name: "Tim KKM", 
+      dropdown: true,
+      items: [
+        { name: "Tentang KKM", path: "/tim-kkm" },
+        { name: "Struktur Organisasi", path: "/tim-kkm/struktur" },
+      ]
+    },
+    { name: "Buat Surat", path: "/layanan-surat" },
     { name: "Pengaduan", path: "/pengaduan" },
   ];
 
-  const isHome = pathname === "/";
-  const isWhiteText = isHome && !scrolled && !mobileMenuOpen;
-
   return (
-    <header 
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled || mobileMenuOpen
-          ? "bg-white/90 backdrop-blur-lg shadow-sm border-b border-surface-variant/50 py-3" 
-          : "bg-transparent py-5 border-b border-transparent"
-      }`}
-    >
+    <header className={`fixed top-0 z-50 w-full transition-all duration-500 py-3 ${headerBgClass}`}>
       <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        <Link href="/" className="flex items-center gap-2 md:gap-3 text-title-md font-title-md group">
-          <Leaf className={`w-8 h-8 md:w-10 md:h-10 group-hover:scale-110 transition-transform duration-300 shrink-0 ${isWhiteText ? 'text-white' : 'text-primary'}`} />
-          <div className="flex flex-col">
-            <span className={`font-display-lg text-2xl md:text-3xl tracking-tight leading-none ${isWhiteText ? 'text-white' : 'text-on-surface'}`}>SIDARA</span>
-            <span className={`text-[9px] md:text-[11px] font-medium tracking-wide mt-1 max-w-[160px] md:max-w-[300px] leading-tight md:leading-none ${isWhiteText ? 'text-white/80' : 'text-on-surface-variant'}`}>
-              Sistem Informasi Digital dan Inventarisasi Desa Sedaraja
+        <Link href="/" className="flex items-center gap-3 text-title-md font-title-md group">
+          <img 
+            src={logoPath}
+            alt={`Logo ${brandName}`}
+            className="w-12 h-12 md:w-14 md:h-14 object-contain group-hover:scale-105 transition-transform duration-300 shrink-0" 
+          />
+          <div className="flex flex-col transition-colors duration-300 justify-center">
+            <span className={`font-sans text-lg md:text-xl font-extrabold tracking-tight leading-none uppercase ${textTitleClass}`}>{brandName}</span>
+            <span className={`font-sans text-[9px] md:text-[10px] font-bold tracking-widest mt-1.5 max-w-[200px] md:max-w-[300px] leading-snug uppercase ${textSubtitleClass}`}>
+              {brandSubtitle}
             </span>
           </div>
         </Link>
         
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex gap-8 items-center" ref={dropdownRef}>
+        <nav className="hidden lg:flex gap-4 xl:gap-8 items-center h-12" ref={dropdownRef}>
           {navItems.map((item) => {
             if (item.dropdown) {
               const isActive = item.items?.some(subItem => pathname.startsWith(subItem.path));
-              const isOpen = openDropdown === item.name;
               
+              const itemColor = isActive 
+                ? "text-white font-extrabold"
+                : "text-white/90 hover:text-white";
+
               return (
-                <div key={item.name} className="relative">
+                <div 
+                  key={item.name} 
+                  className="relative h-full flex items-center group"
+                >
                   <button 
-                    onClick={() => setOpenDropdown(isOpen ? null : item.name)}
-                    className={`font-label-sm text-[15px] flex items-center gap-1.5 transition-all duration-200 py-2 
-                      ${isWhiteText 
-                        ? (isActive ? "text-white font-semibold" : "text-white/90 hover:text-white") 
-                        : (isActive ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary")}`}
+                    className={`font-sans font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors duration-300 h-full ${itemColor}`}
                   >
                     {item.name}
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" />
                   </button>
                   
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-3 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl shadow-surface-variant/40 border border-surface-variant/50 overflow-hidden py-2"
-                      >
-                        {item.items?.map(subItem => {
-                          const isSubActive = pathname === subItem.path || pathname.startsWith(subItem.path + '/');
-                          return (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.path}
-                              onClick={() => setOpenDropdown(null)}
-                              className={`block px-5 py-2.5 font-label-sm text-[14px] transition-colors
-                                ${isSubActive ? "bg-primary/5 text-primary font-semibold" : "text-on-surface-variant hover:bg-surface-variant/30 hover:text-primary"}`}
-                            >
-                              {subItem.name}
-                            </Link>
-                          );
-                        })}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50">
+                    <div className="w-56 bg-primary border border-white/20 shadow-md py-2 rounded flex flex-col">
+                      {item.items?.map(subItem => {
+                        const isSubActive = pathname === subItem.path || pathname.startsWith(subItem.path + '/');
+                        return (
+                          <Link
+                            key={subItem.name}
+                            href={subItem.path}
+                            className={`block px-5 py-2.5 font-sans text-xs font-bold uppercase tracking-widest transition-colors ${
+                              isSubActive ? "text-white bg-white/10 border-l-2 border-white" : "text-white/70 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                            }`}
+                          >
+                            {subItem.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               );
             }
 
             const isActive = pathname === item.path;
+            const itemColor = isActive 
+              ? "text-white font-extrabold"
+              : "text-white/90 hover:text-white";
+
             return (
               <Link 
                 key={item.name} 
                 href={item.path || "/"}
-                className={`font-label-sm text-[15px] transition-all duration-200 py-2 relative
-                  ${isWhiteText 
-                    ? (isActive ? "text-white font-semibold" : "text-white/90 hover:text-white") 
-                    : (isActive ? "text-primary font-semibold" : "text-on-surface-variant hover:text-primary")}`}
+                className={`font-sans font-bold text-xs uppercase tracking-wider transition-colors duration-300 h-full flex items-center relative ${itemColor}`}
               >
                 {item.name}
                 {isActive && (
-                  <motion.div layoutId="underline" className={`absolute bottom-0 left-0 w-full h-0.5 rounded-full ${isWhiteText ? 'bg-white' : 'bg-primary'}`} />
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white" />
                 )}
               </Link>
             );
@@ -155,7 +178,11 @@ export function Header() {
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-4 lg:hidden">
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`p-2 transition-colors ${isWhiteText ? 'text-white hover:text-white/80' : 'text-on-surface-variant hover:text-primary'}`}>
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
+            className={`p-2 transition-colors duration-300 ${menuIconClass}`}
+            aria-label="Toggle Navigation Menu"
+          >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
@@ -172,45 +199,87 @@ export function Header() {
               open: { height: "auto", opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.1, duration: 0.3, ease: "easeInOut" } },
               closed: { height: 0, opacity: 0, transition: { duration: 0.3, ease: "easeInOut", staggerChildren: 0.05, staggerDirection: -1 } }
             }}
-            className="lg:hidden bg-transparent backdrop-blur-md overflow-hidden"
+            className="lg:hidden bg-primary border-t border-white/20 shadow-md overflow-hidden"
           >
-             <div className="px-margin-mobile py-6 flex flex-col gap-6">
-              {navItems.map((item) => (
-                <motion.div 
-                  key={item.name} 
-                  variants={{
-                    open: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
-                    closed: { opacity: 0, x: -20, transition: { duration: 0.2 } }
-                  }}
-                  className="flex flex-col gap-3"
-                >
-                  {item.dropdown ? (
-                    <>
-                      <div className="font-label-sm font-bold text-on-surface-variant uppercase tracking-wider text-xs">{item.name}</div>
-                      <div className="flex flex-col gap-2 pl-4 border-l-2 border-surface-variant/50">
-                        {item.items?.map(subItem => (
-                          <Link
-                            key={subItem.name}
-                            href={subItem.path}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="font-label-sm text-on-surface hover:text-primary py-2 text-[15px]"
-                          >
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <Link
-                      href={item.path || "/"}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="font-label-sm font-semibold text-primary py-2 text-[15px]"
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                </motion.div>
-              ))}
+            <div className="px-margin-mobile py-4 flex flex-col gap-1">
+              {navItems.map((item) => {
+                const isDropdownOpen = openMobileDropdown === item.name;
+                const isSubActive = item.dropdown && item.items?.some(sub => pathname.startsWith(sub.path));
+
+                return (
+                  <motion.div 
+                    key={item.name} 
+                    variants={{
+                      open: { opacity: 1, x: 0, transition: { duration: 0.3, ease: "easeOut" } },
+                      closed: { opacity: 0, x: -20, transition: { duration: 0.2 } }
+                    }}
+                    className="flex flex-col border-b border-white/10 last:border-b-0 py-1"
+                  >
+                    {item.dropdown ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setOpenMobileDropdown(isDropdownOpen ? null : item.name)}
+                          className="flex items-center justify-between w-full font-sans font-bold text-on-surface py-3 text-xs uppercase tracking-widest text-left group"
+                        >
+                          <span className={isSubActive ? "text-white font-extrabold" : "text-white/90"}>
+                            {item.name}
+                          </span>
+                          <ChevronDown className={`w-4 h-4 text-white/70 transition-transform duration-300 ${isDropdownOpen ? "rotate-180 text-white" : ""}`} />
+                        </button>
+                        
+                        <AnimatePresence>
+                          {isDropdownOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: "easeInOut" }}
+                              className="overflow-hidden"
+                            >
+                              <div className="flex flex-col gap-1 pl-4 border-l-2 border-white/20 my-2 pb-2">
+                                {item.items?.map(subItem => {
+                                  const isCurrent = pathname === subItem.path;
+                                  return (
+                                    <Link
+                                      key={subItem.name}
+                                      href={subItem.path}
+                                      onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        setOpenMobileDropdown(null);
+                                      }}
+                                      className={`font-sans py-2.5 px-3 rounded text-xs uppercase tracking-widest font-bold transition-colors ${
+                                        isCurrent 
+                                          ? "text-white bg-white/10" 
+                                          : "text-white/70 hover:text-white hover:bg-white/5"
+                                      }`}
+                                    >
+                                      {subItem.name}
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.path || "/"}
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setOpenMobileDropdown(null);
+                        }}
+                        className={`font-sans font-bold py-3 text-xs uppercase tracking-widest ${
+                          pathname === item.path ? "text-white font-extrabold" : "text-white/90 hover:text-white"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
@@ -218,4 +287,3 @@ export function Header() {
     </header>
   );
 }
-

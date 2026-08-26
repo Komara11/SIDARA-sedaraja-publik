@@ -1,208 +1,113 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { History, Target, Loader2 } from "lucide-react";
+import { History, Target, ShieldCheck, HeartHandshake, Sparkles, ArrowRight } from "lucide-react";
+import Link from "next/link";
+
+const nilaiIcons = [HeartHandshake, ShieldCheck, Sparkles];
 
 export default function ProfilPage() {
-  const [aparatur, setAparatur] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const [h, setH] = useState<any>(null);
   useEffect(() => {
-    fetch('/api/aparatur')
-      .then(res => res.json())
-      .then(data => {
-        setAparatur(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    fetch('/api/halaman').then(r => r.json()).then(d => setH(d)).catch(() => {});
   }, []);
 
-  const kepalaDesa = aparatur.find(a => a.level === 1);
-  const others = aparatur.filter(a => a.level > 1).sort((a, b) => a.level - b.level);
+  const p = h?.profil || {};
+  const heroTitle = p.heroTitle || "Mengenal Desa Sedaraja";
+  const heroHighlight = p.heroTitleHighlight || "Sedaraja";
+  const heroDesc = p.heroDescription || "Perjalanan panjang, nilai-nilai luhur warisan leluhur, serta visi dan misi pembangunan masa depan Desa Sedaraja.";
+  const sejarahImage = "https://i.pinimg.com/1200x/55/b6/64/55b6646d0b1be4bbf05aa718b458f0d4.jpg";
+  const sejarahBadge = p.sejarahBadge || "Jejak Sejarah";
+  const sejarahTitle = p.sejarahTitle || "Akar Budaya & Transformasi Modern.";
+  const sejarahHighlight = p.sejarahTitleHighlight || "Transformasi Modern.";
+  const sejarahParagraphs = p.sejarahParagraphs || [
+    "Desa Sedaraja didirikan pada awal abad ke-19, berawal dari sebuah pemukiman kecil yang bertumpu pada sektor pertanian tradisional. Nama 'Sedaraja' mencerminkan harapan luhur para pendiri akan kemakmuran dan kehormatan yang setara dengan keluarga kerajaan.",
+    "Seiring berjalannya waktu, desa ini telah bertransformasi menjadi pusat pertumbuhan agraria modern tanpa meninggalkan akar budayanya. Inovasi digital dan partisipasi aktif warga kini menjadi pilar utama pembangunan berkelanjutan di Sedaraja."
+  ];
+  const visi = p.visi || "Terwujudnya Desa Sedaraja yang Mandiri, Inovatif, dan Sejahtera melalui optimalisasi potensi lokal berbasis teknologi berkelanjutan.";
+  const visiHighlight = p.visiHighlight || "Mandiri, Inovatif, dan Sejahtera";
+  const misi = p.misi?.length ? p.misi : [
+    { icon: "groups", title: "Tata Kelola", desc: "Mewujudkan pemerintahan desa yang transparan, akuntabel, dan responsif terhadap kebutuhan warga." },
+    { icon: "agriculture", title: "Ekonomi", desc: "Meningkatkan kemandirian ekonomi masyarakat melalui pemberdayaan UMKM dan modernisasi pertanian." },
+    { icon: "school", title: "Sosial Budaya", desc: "Meningkatkan kualitas sumber daya manusia yang berpendidikan dan memelihara kerukunan antar warga." },
+    { icon: "eco", title: "Lingkungan", desc: "Melestarikan lingkungan hidup dan potensi wisata alam untuk mendukung pembangunan berkelanjutan." }
+  ];
+  const nilaiUtama = p.nilaiUtama?.length ? p.nilaiUtama : [
+    { title: "Gotong Royong", desc: "Kebersamaan dan kepedulian antar sesama warga sebagai ruh utama pembangunan fisik maupun sosial di desa." },
+    { title: "Integritas & Keterbukaan", desc: "Pengelolaan administrasi publik dan keuangaan desa yang jujur, terbuka, dan dapat dipertanggungjawabkan." },
+    { title: "Inovasi Berkelanjutan", desc: "Memanfaatkan teknologi informasi modern untuk memudahkan pelayanan tanpa melupakan keasrian alam." }
+  ];
+
+  // Split title around highlight
+  const heroTitleBefore = heroTitle.replace(heroHighlight, "").trim();
+
   return (
-    <div className="flex flex-col flex-grow w-full bg-surface-bright">
-      
+    <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
+      <div className="pt-28 md:pt-32" />
+
+
+
       {/* Sejarah Desa Section */}
-      <section className="py-24 md:py-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full relative">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="w-full lg:w-1/2 relative"
-          >
-            <div className="aspect-square md:aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/10 relative">
-              <img 
-                className="absolute inset-0 w-full h-full object-cover" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuClRY5ynZmEr4In1AOD69QJUU1NAxZyVN8WXGAthPUEL_-qGKmlimOxkSAif7l-EcEA4bFJ0SxggWk3Y2iUpyGLaw7ZS0tFsoNys1RikvLuDfEHGVLnwuyE1rMgnecR2K5tsOEa8MkS5ZnaJVX37VSHYrN6KfdmEVpAykYEVA_9n12IaG5V_LwYWJpFAEF7fYdyc6sKyGmz9LAGaxD4IimfaRRaRRuQnuTBgNtUZgHIypJZCmklbr8N"
-                alt="Sejarah Desa"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-black/40 to-transparent" />
-            </div>
-            
-            {/* Decorative element */}
-            <div className="absolute -top-10 -left-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl -z-10" />
-            
-            <div className="absolute -bottom-8 -right-8 bg-white p-6 rounded-3xl shadow-xl flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
-                <History className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="font-label-sm text-on-surface-variant">Sejak Abad ke-19</p>
-                <p className="font-title-md text-on-surface font-semibold">Warisan Leluhur</p>
+      <section className="pb-12 md:pb-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full relative">
+        <div className="flex flex-col lg:flex-row gap-12 items-start bg-white p-8 md:p-12 border border-surface-variant/50 shadow-sm rounded-sm">
+          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: "easeOut" }} className="w-full lg:w-5/12 relative">
+      <div className="aspect-[4/3] rounded-md overflow-hidden border border-surface-variant/40 shadow-sm relative">
+        {sejarahImage ? (
+          <img className="absolute inset-0 w-full h-full object-cover" src={sejarahImage} alt="Sejarah Desa Sedaraja" />
+        ) : (
+          <img className="absolute inset-0 w-full h-full object-cover" src="https://i.pinimg.com/1200x/55/b6/64/55b6646d0b1be4bbf05aa718b458f0d4.jpg" alt="Sejarah Desa Sedaraja" />
+        )}
+      </div>
+            <div className="mt-4 bg-surface-bright p-4 border-l-4 border-primary">
+              <div className="flex items-center gap-3 text-primary">
+                <History className="w-5 h-5" />
+                <p className="font-bold uppercase tracking-wider text-sm">Warisan Leluhur (Sejak Abad ke-19)</p>
               </div>
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="w-full lg:w-1/2 flex flex-col"
-          >
-            <div className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full font-label-sm mb-6 w-max font-semibold">
-              Jejak Sejarah
-            </div>
-            <h2 className="font-display-lg text-4xl md:text-5xl text-on-surface mb-8 tracking-tight leading-tight">
-              Akar Budaya & <span className="text-primary">Transformasi Modern.</span>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 1, ease: "easeOut", delay: 0.2 }} className="w-full lg:w-7/12 flex flex-col">
+            <div className="inline-block border border-primary/30 text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-4 w-max">{sejarahBadge}</div>
+            <h2 className="font-sans font-bold text-3xl md:text-4xl text-on-surface mb-6 tracking-tight leading-tight">
+              {sejarahTitle.replace(sejarahHighlight, "").trim()}{' '}<span className="text-primary">{sejarahHighlight}</span>
             </h2>
-            <div className="flex flex-col gap-6">
-              <p className="font-body-lg text-on-surface-variant leading-relaxed">
-                Desa Sedaraja didirikan pada awal abad ke-19, berawal dari sebuah pemukiman kecil yang bertumpu pada sektor pertanian tradisional. Nama 'Sedaraja' mencerminkan harapan luhur para pendiri akan kemakmuran dan kehormatan yang setara dengan keluarga kerajaan.
-              </p>
-              <p className="font-body-lg text-on-surface-variant leading-relaxed">
-                Seiring berjalannya waktu, desa ini telah bertransformasi menjadi pusat pertumbuhan agraria modern tanpa meninggalkan akar budayanya. Inovasi digital dan partisipasi aktif warga kini menjadi pilar utama pembangunan berkelanjutan di Sedaraja.
-              </p>
+            <div className="flex flex-col gap-4 text-justify">
+              {sejarahParagraphs.map((para: string, i: number) => (
+                <p key={i} className="font-sans text-on-surface-variant leading-relaxed text-[15px]">{para}</p>
+              ))}
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Visi & Misi Section */}
-      <section className="py-24 md:py-32 bg-white w-full">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col gap-20">
-          
-          {/* Visi */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <Target className="w-12 h-12 text-primary/30 mx-auto mb-6" />
-            <h2 className="font-label-sm text-primary uppercase tracking-widest mb-6 font-semibold">Visi Utama</h2>
-            <blockquote className="font-display-lg text-3xl md:text-5xl text-on-surface tracking-tight leading-snug">
-              "Terwujudnya Desa Sedaraja yang <span className="text-primary relative inline-block">Mandiri, Inovatif, dan Sejahtera<div className="absolute bottom-1 left-0 w-full h-3 bg-primary/20 -z-10 rounded-sm"></div></span> melalui optimalisasi potensi lokal berbasis teknologi berkelanjutan."
+      <section className="py-20 md:py-24 bg-surface-bright w-full border-y border-surface-variant/40">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-col gap-16">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: "easeOut" }} className="text-center max-w-4xl mx-auto bg-white p-10 md:p-14 border border-surface-variant/50 shadow-sm rounded-sm">
+            <Target className="w-10 h-10 text-primary mx-auto mb-4" />
+            <h2 className="font-sans text-on-surface-variant text-sm font-bold uppercase tracking-widest mb-4">Visi Utama</h2>
+            <blockquote className="font-sans font-bold text-2xl md:text-3xl text-on-surface tracking-tight leading-relaxed italic text-center">
+              &quot;{visi.includes(visiHighlight) ? (
+                <>{visi.split(visiHighlight)[0]}<span className="text-primary">{visiHighlight}</span>{visi.split(visiHighlight)[1]}</>
+              ) : visi}&quot;
             </blockquote>
           </motion.div>
 
-          {/* Misi */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: "groups", title: "Tata Kelola", desc: "Mewujudkan pemerintahan desa yang transparan, akuntabel, dan responsif terhadap kebutuhan warga." },
-              { icon: "agriculture", title: "Ekonomi", desc: "Meningkatkan kemandirian ekonomi masyarakat melalui pemberdayaan UMKM dan modernisasi pertanian." },
-              { icon: "school", title: "Sosial Budaya", desc: "Meningkatkan kualitas sumber daya manusia yang berpendidikan dan memelihara kerukunan antar warga." },
-              { icon: "eco", title: "Lingkungan", desc: "Melestarikan lingkungan hidup dan potensi wisata alam untuk mendukung pembangunan berkelanjutan." }
-            ].map((misi, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-                className="group flex flex-col"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-surface-container-low flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                  <span className="material-symbols-outlined text-[28px] text-primary group-hover:text-white transition-colors">{misi.icon}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {misi.map((m: any, i: number) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }} className="group flex flex-col p-8 bg-white border border-surface-variant/50 rounded-sm hover:border-primary transition-colors">
+                <div className="w-12 h-12 flex items-center justify-center mb-4 text-primary border border-primary/20 bg-primary/5 rounded-md">
+                  <span className="material-symbols-outlined text-[24px]">{m.icon}</span>
                 </div>
-                <h4 className="font-title-md text-[20px] text-on-surface mb-3 tracking-tight">{misi.title}</h4>
-                <p className="font-body-sm text-on-surface-variant leading-relaxed">{misi.desc}</p>
+                <h4 className="font-sans text-lg text-on-surface mb-2 tracking-tight font-bold">{m.title}</h4>
+                <p className="font-sans text-sm text-on-surface-variant leading-relaxed text-justify">{m.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Struktur Kepengurusan Section */}
-      <section className="py-24 md:py-32 bg-surface-container-low w-full relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-white rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3" />
-        
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-center max-w-2xl mx-auto mb-20"
-          >
-            <div className="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full font-label-sm mb-4 font-semibold">
-              Aparatur Desa
-            </div>
-            <h2 className="font-display-lg text-4xl md:text-5xl text-on-surface mb-6 tracking-tight">Struktur Kepengurusan</h2>
-            <p className="font-body-lg text-on-surface-variant leading-relaxed">
-              Jajaran aparatur pemerintah Desa Sedaraja yang berdedikasi melayani masyarakat dengan integritas dan profesionalisme.
-            </p>
-          </motion.div>
-          
-          <div className="flex flex-col items-center">
-            {/* Kepala Desa */}
-            {kepalaDesa && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="flex flex-col items-center z-10 relative group"
-              >
-                <div className="w-36 h-36 rounded-full bg-white shadow-xl flex items-center justify-center mb-6 overflow-hidden border-4 border-white group-hover:border-primary/20 transition-all duration-300">
-                  <span className="material-symbols-outlined text-[64px] text-surface-variant">person</span>
-                </div>
-                <h3 className="font-title-md text-2xl text-on-surface font-semibold mb-1">{kepalaDesa.name}</h3>
-                <p className="font-label-sm text-[15px] text-primary uppercase tracking-widest font-semibold">{kepalaDesa.role}</p>
-              </motion.div>
-            )}
 
-            {/* Vertical line connecting top to horizontal line */}
-            <div className="w-px h-16 bg-surface-variant/80 hidden md:block"></div>
-            
-            {/* Horizontal line */}
-            <div className="w-full max-w-4xl h-px bg-surface-variant/80 hidden md:block relative">
-               {/* Vertical lines connecting horizontal line to bottom items */}
-               <div className="absolute top-0 left-[16.66%] w-px h-16 bg-surface-variant/80"></div>
-               <div className="absolute top-0 left-[50%] w-px h-16 bg-surface-variant/80"></div>
-               <div className="absolute top-0 left-[83.33%] w-px h-16 bg-surface-variant/80"></div>
-            </div>
-            
-            {/* Jajaran Bawah */}
-            {loading ? (
-              <div className="mt-16 flex justify-center"><Loader2 className="w-8 h-8 text-primary animate-spin" /></div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full max-w-4xl mt-12 md:mt-16">
-                {others.map((person, i) => (
-                  <motion.div 
-                    key={person.id || i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.2 + (i % 3) * 0.1 }}
-                    className="flex flex-col items-center text-center group"
-                  >
-                    <div className="w-28 h-28 rounded-full bg-white shadow-lg flex items-center justify-center mb-5 overflow-hidden border-4 border-white group-hover:border-primary/10 transition-all duration-300">
-                      <span className="material-symbols-outlined text-[48px] text-surface-variant">person</span>
-                    </div>
-                    <h3 className="font-title-md text-xl text-on-surface font-semibold mb-1">{person.name}</h3>
-                    <p className="font-label-sm text-[14px] text-on-surface-variant">{person.role}</p>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

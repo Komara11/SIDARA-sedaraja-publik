@@ -9,10 +9,34 @@ export default function PengaduanPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
   const [name, setName] = useState("");
-  const [nik, setNik] = useState("");
   const [phone, setPhone] = useState("");
   const [description, setDescription] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingPhoto(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.url) {
+        setPhotoUrl(data.url);
+      } else {
+        alert(data.error || 'Gagal mengupload gambar');
+      }
+    } catch (err) {
+      alert('Gagal mengupload gambar');
+    } finally {
+      setIsUploadingPhoto(false);
+    }
+  };
 
   const categories = [
     { id: "infrastruktur", label: "Infrastruktur & Fasilitas Umum" },
@@ -34,7 +58,7 @@ export default function PengaduanPage() {
       const res = await fetch("/api/pengaduan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, nik, phone, category, description })
+        body: JSON.stringify({ name, phone, category, description, photo: photoUrl })
       });
       
       if (res.ok) {
@@ -43,9 +67,9 @@ export default function PengaduanPage() {
           setIsSubmitted(false);
           setCategory("");
           setName("");
-          setNik("");
           setPhone("");
           setDescription("");
+          setPhotoUrl("");
         }, 4000);
       } else {
         alert("Gagal mengirim laporan. Silakan coba lagi.");
@@ -60,20 +84,15 @@ export default function PengaduanPage() {
   return (
     <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
       
+      {/* Header Spacing */}
+      <div className="pt-28 md:pt-32"></div>
+      
       {/* Header Section */}
-      <section className="pt-28 md:pt-32 pb-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full text-center">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex justify-center mb-6"
-        >
-          <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center rotate-3 hover:rotate-0 transition-transform duration-500 text-primary">
-            <Megaphone className="w-10 h-10" />
-          </div>
-        </motion.div>
-        <h1 className="font-display-lg text-4xl md:text-5xl text-on-surface mb-4 tracking-tight">Layanan <span className="text-primary">Pengaduan</span></h1>
-        <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+      <section className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full mb-16 mt-8 flex flex-col items-center text-center">
+        <h1 className="font-sans font-extrabold text-4xl sm:text-5xl md:text-6xl text-primary tracking-tight leading-tight mb-6 uppercase max-w-4xl">
+          Layanan Pengaduan
+        </h1>
+        <p className="font-sans text-lg sm:text-xl text-on-surface-variant leading-relaxed max-w-3xl mb-8">
           Sampaikan laporan, keluhan, atau aspirasi Anda. Partisipasi Anda sangat berarti bagi kemajuan Desa Sedaraja.
         </p>
       </section>
@@ -83,33 +102,41 @@ export default function PengaduanPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-surface-variant/30 relative overflow-visible max-w-4xl mx-auto hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-500"
+          className="bg-white p-8 md:p-12 rounded-md shadow-sm border border-surface-variant/30 relative overflow-visible max-w-4xl mx-auto hover:shadow-md hover:shadow-primary/5 transition-shadow duration-500"
         >
           <AnimatePresence>
             {isSubmitted && (
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="absolute inset-0 z-50 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center rounded-[2rem]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4 backdrop-blur-sm"
               >
                 <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", bounce: 0.5, delay: 0.2 }}
-                  className="w-24 h-24 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-6"
+                  initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                  className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full flex flex-col items-center text-center"
                 >
-                  <CheckCircle2 className="w-12 h-12" />
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", bounce: 0.5, delay: 0.1 }}
+                    className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6"
+                  >
+                    <CheckCircle2 className="w-10 h-10" />
+                  </motion.div>
+                  <h2 className="font-display-lg text-2xl text-on-surface mb-3 tracking-tight">Laporan Terkirim</h2>
+                  <p className="font-body-md text-on-surface-variant leading-relaxed">
+                    Terima kasih, laporan Anda telah kami terima dan akan segera ditindaklanjuti oleh aparat desa.
+                    <br/>
+                    <span className="inline-block mt-6 px-6 py-2 bg-primary/10 rounded-full font-bold text-primary font-label-sm tracking-widest uppercase">
+                      #SDR-{(Math.random() * 10000).toFixed(0)}
+                    </span>
+                  </p>
                 </motion.div>
-                <h2 className="font-display-lg text-3xl text-primary mb-4 tracking-tight">Laporan Terkirim</h2>
-                <p className="font-body-lg text-on-surface-variant max-w-md leading-relaxed">
-                  Terima kasih, laporan Anda telah kami terima dan akan segera ditindaklanjuti oleh aparat terkait.
-                  <br/>
-                  <span className="inline-block mt-6 px-6 py-2 bg-primary/10 rounded-full font-bold text-primary font-label-sm">
-                    Tiket: #SDR-{(Math.random() * 10000).toFixed(0)}
-                  </span>
-                </p>
               </motion.div>
+
             )}
           </AnimatePresence>
 
@@ -122,20 +149,8 @@ export default function PengaduanPage() {
                   required 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
+                  className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
                   placeholder="Masukkan nama lengkap Anda"
-                />
-              </div>
-              <div className="flex flex-col gap-3">
-                <label className="font-label-sm text-[14px] font-semibold text-on-surface">Nomor Induk Kependudukan (NIK)</label>
-                <input 
-                  type="text" 
-                  required 
-                  pattern="[0-9]{16}"
-                  value={nik}
-                  onChange={(e) => setNik(e.target.value)}
-                  className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
-                  placeholder="16 Digit NIK"
                 />
               </div>
             </div>
@@ -148,7 +163,7 @@ export default function PengaduanPage() {
                   required 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
+                  className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50"
                   placeholder="Contoh: 081234567890"
                 />
               </div>
@@ -157,7 +172,7 @@ export default function PengaduanPage() {
                 <div className="relative w-full">
                   <div 
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className={`w-full px-5 py-4 bg-surface-container-low border rounded-xl flex justify-between items-center cursor-pointer transition-all ${isDropdownOpen ? 'border-primary ring-2 ring-primary/20' : 'border-surface-variant/50 hover:border-on-surface-variant/30'}`}
+                    className={`w-full px-5 py-4 bg-surface-container-low border rounded-md flex justify-between items-center cursor-pointer transition-all ${isDropdownOpen ? 'border-primary ring-2 ring-primary/20' : 'border-surface-variant/50 hover:border-on-surface-variant/30'}`}
                   >
                     <span className={`font-body-lg ${category ? 'text-on-surface' : 'text-on-surface-variant/50'}`}>
                       {category ? categories.find(c => c.id === category)?.label : "Pilih Kategori..."}
@@ -172,7 +187,7 @@ export default function PengaduanPage() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 right-0 mt-3 bg-white border border-surface-variant/30 rounded-xl shadow-xl z-30 overflow-hidden flex flex-col py-2"
+                        className="absolute top-full left-0 right-0 mt-3 bg-white border border-surface-variant/30 rounded-md shadow-lg z-30 overflow-hidden flex flex-col py-2"
                       >
                         {categories.map((c) => (
                           <div 
@@ -202,28 +217,43 @@ export default function PengaduanPage() {
                 rows={5}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50 resize-none"
+                className="w-full px-5 py-4 bg-surface-container-low border border-surface-variant/50 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-body-lg text-on-surface placeholder:text-on-surface-variant/50 resize-none"
                 placeholder="Deskripsikan laporan Anda secara jelas dan rinci..."
               ></textarea>
             </div>
 
             <div className="flex flex-col gap-3">
-              <label className="font-label-sm text-[14px] font-semibold text-on-surface">Lampiran Foto (Opsional)</label>
-              <label className="border-2 border-dashed border-surface-variant/50 hover:border-primary focus-within:border-primary rounded-2xl p-10 flex flex-col items-center justify-center bg-surface-container-low/50 hover:bg-primary/5 transition-all cursor-pointer group">
-                <input type="file" className="hidden" accept="image/*" />
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Upload className="w-6 h-6 text-primary" />
+              <label className="font-label-sm text-[14px] font-semibold text-on-surface">Lampiran Foto Bukti (Opsional)</label>
+              {photoUrl ? (
+                <div className="relative w-full h-64 rounded-md border border-surface-variant/50 overflow-hidden bg-surface-container">
+                  <img src={photoUrl} alt="Preview" className="w-full h-full object-cover" />
+                  <button type="button" onClick={() => setPhotoUrl("")} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 backdrop-blur-sm transition-colors shadow-lg">
+                    <span className="font-bold text-[18px]">X</span>
+                  </button>
                 </div>
-                <p className="font-title-md text-lg text-on-surface font-semibold">Klik untuk mengunggah file gambar</p>
-                <p className="font-body-sm text-on-surface-variant mt-2">Mendukung format JPG, PNG (Maks 5MB)</p>
-              </label>
+              ) : (
+                <label className="border-2 border-dashed border-surface-variant/50 hover:border-primary focus-within:border-primary rounded-md p-10 flex flex-col items-center justify-center bg-surface-container-low/50 hover:bg-primary/5 transition-all cursor-pointer group">
+                  <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} disabled={isUploadingPhoto} />
+                  <div className="w-16 h-16 bg-white rounded flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform duration-300">
+                    {isUploadingPhoto ? (
+                      <span className="w-6 h-6 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></span>
+                    ) : (
+                      <Upload className="w-6 h-6 text-primary" />
+                    )}
+                  </div>
+                  <p className="font-title-md text-lg text-on-surface font-semibold">
+                    {isUploadingPhoto ? "Mengunggah..." : "Klik untuk mengunggah file gambar"}
+                  </p>
+                  <p className="font-body-sm text-on-surface-variant mt-2">Gambar akan otomatis dikonversi ke format yang ringan (WebP)</p>
+                </label>
+              )}
             </div>
 
             <div className="pt-6 flex justify-end">
               <button 
                 type="submit"
                 disabled={isLoading}
-                className="bg-primary text-white font-label-sm text-[15px] font-semibold px-8 py-4 rounded-full hover:bg-primary/90 hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3 w-full md:w-auto"
+                className="bg-primary text-white font-label-sm text-[15px] font-semibold px-8 py-4 rounded hover:bg-primary/90 hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-3 w-full md:w-auto"
               >
                 {isLoading ? "Mengirim..." : "Kirim Laporan"}
                 {!isLoading && <Send className="w-4 h-4" />}

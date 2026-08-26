@@ -2,178 +2,178 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ArrowRight, Calendar, MapPin, Clock } from "lucide-react";
+import { ArrowRight, Search, Calendar, User, Tag, Loader2, Newspaper, X } from "lucide-react";
 
 export default function BeritaPage() {
   const [berita, setBerita] = useState<any[]>([]);
-  const [agenda, setAgenda] = useState<any[]>([]);
+  const [halaman, setHalaman] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Semua");
 
   useEffect(() => {
     Promise.all([
       fetch('/api/berita').then(res => res.json()),
-      fetch('/api/agenda').then(res => res.json())
-    ]).then(([b, a]) => {
-      setBerita(b);
-      setAgenda(a);
-    });
+      fetch('/api/halaman').then(res => res.json())
+    ])
+    .then(([beritaData, halamanData]) => {
+      setBerita(beritaData);
+      setHalaman(halamanData.berita || {});
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
   }, []);
 
-  const featuredNews = berita[0];
-  const secondaryNews = berita.slice(1);
+  // Extract unique categories
+  const categories = ["Semua", ...Array.from(new Set(berita.map(b => b.category).filter(Boolean)))];
+
+  // Filter news items based on search query and selected category
+  const filteredBerita = berita.filter(news => {
+    const matchesSearch = 
+      news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (news.snippet && news.snippet.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (news.content && news.content.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (news.author && news.author.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    const matchesCategory = selectedCategory === "Semua" || news.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   return (
-    <div className="flex flex-col flex-grow w-full bg-surface-bright">
+    <div className="flex flex-col flex-grow w-full bg-surface min-h-screen">
       
       {/* Header Spacing */}
       <div className="pt-28 md:pt-32"></div>
 
-      {/* Newsroom Section */}
-      <section className="py-12 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
-          {/* Featured News (Left, larger span) */}
-          {featuredNews && (
-            <motion.article 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="lg:col-span-7 flex flex-col group cursor-pointer"
-            >
-              <Link href={`/berita/${featuredNews.slug || featuredNews.id}`} className="flex flex-col h-full">
-                <div className="aspect-[4/3] rounded-3xl overflow-hidden mb-6 relative shadow-md">
-                  {featuredNews.image ? (
-                    <img 
-                      src={featuredNews.image} 
-                      alt={featuredNews.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-surface-container-low flex items-center justify-center">
-                      <span className="material-symbols-outlined text-6xl text-on-surface-variant/30">image</span>
-                    </div>
-                  )}
-                  <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1.5 rounded-full font-label-sm text-[13px] shadow-sm">
-                    {featuredNews.category}
-                  </div>
-                </div>
-                <div className="flex flex-col flex-grow">
-                  <span className="font-label-sm text-on-surface-variant mb-3">
-                    {new Date(featuredNews.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
-                  </span>
-                  <h2 className="font-display-lg text-2xl sm:text-3xl md:text-4xl text-on-surface mb-4 group-hover:text-primary transition-colors tracking-tight leading-tight">
-                    {featuredNews.title}
-                  </h2>
-                  <p className="font-body-lg text-on-surface-variant line-clamp-3 mb-6">
-                    {featuredNews.snippet || featuredNews.content}
-                  </p>
-                  <div className="mt-auto flex items-center text-primary font-label-sm gap-2 font-semibold">
-                    Baca Selengkapnya <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </Link>
-            </motion.article>
-          )}
-
-          {/* Secondary News List (Right) */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            <h3 className="font-title-md text-xl text-on-surface border-b border-surface-variant/50 pb-4 tracking-tight font-semibold">
-              Berita Lainnya
-            </h3>
-            <div className="flex flex-col gap-6">
-              {secondaryNews.map((news, i) => (
-                <motion.article 
-                  key={news.slug}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-                  className="group cursor-pointer"
+      {/* Search Section */}
+      <section className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full mb-12 mt-8">
+        {/* Search Engine & Filter Bar */}
+          <div className="z-10 bg-surface-bright p-5 md:p-6 rounded-md shadow-sm border border-surface-variant/50 flex flex-col gap-5 w-full">
+            {/* Search Engine Input */}
+            <div className="relative w-full">
+              <Search className="w-5 h-5 text-on-surface-variant absolute left-4 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Cari kata kunci berita, pengumuman, atau topik..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white pl-12 pr-10 py-3 md:py-4 rounded text-sm md:text-base border border-surface-variant/40 focus:outline-none focus:border-primary transition-colors font-sans shadow-sm"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-primary transition-colors"
                 >
-                  <Link href={`/berita/${news.slug}`} className="flex gap-5">
-                    <div className="w-32 h-32 rounded-2xl overflow-hidden shrink-0 shadow-sm">
-                      <img 
-                        src={news.image} 
-                        alt={news.title} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" 
-                      />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-label-sm text-primary text-[12px] font-semibold">{news.category}</span>
-                        <span className="w-1 h-1 rounded-full bg-surface-variant/80"></span>
-                        <span className="font-label-sm text-on-surface-variant text-[12px]">
-                          {new Date(news.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
-                        </span>
-                      </div>
-                      <h4 className="font-title-md text-lg text-on-surface line-clamp-2 group-hover:text-primary transition-colors leading-snug font-semibold">
-                        {news.title}
-                      </h4>
-                    </div>
-                  </Link>
-                </motion.article>
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+
+            {/* Category Filter Chips */}
+            <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pt-4 border-t border-surface-variant/30">
+              <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant shrink-0 mr-2 flex items-center gap-1">
+                <Tag className="w-3.5 h-3.5" /> Kategori:
+              </span>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-all shrink-0 border ${
+                    selectedCategory === cat
+                      ? "bg-primary text-white border-primary shadow-sm"
+                      : "bg-white text-on-surface-variant hover:text-primary border-surface-variant/40"
+                  }`}
+                >
+                  {cat}
+                </button>
               ))}
             </div>
           </div>
-          
-        </div>
       </section>
 
-      {/* Agenda Section */}
-      <section className="py-24 bg-surface-container-low w-full mt-12 border-t border-surface-variant/30">
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
-            <div>
-              <h2 className="font-display-lg text-3xl sm:text-4xl md:text-5xl text-on-surface mb-3 tracking-tight">Agenda Kegiatan</h2>
-              <p className="font-body-lg text-on-surface-variant">Jadwal acara dan kegiatan resmi desa yang akan datang.</p>
+      {/* Newsroom Section */}
+      <section className="pb-32 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full">
+        {loading ? (
+          <div className="py-24 flex flex-col items-center justify-center text-on-surface-variant gap-3">
+            <Loader2 className="w-10 h-10 text-primary animate-spin" />
+            <p className="font-sans text-sm font-bold uppercase tracking-widest">Memuat berita desa...</p>
+          </div>
+        ) : filteredBerita.length === 0 ? (
+          <div className="bg-white p-12 rounded-md border border-surface-variant/50 text-center flex flex-col items-center justify-center gap-4 shadow-sm">
+            <div className="w-16 h-16 rounded border border-surface-variant/30 bg-surface-bright flex items-center justify-center text-primary mb-2">
+              <Newspaper className="w-8 h-8" />
             </div>
-            <button className="flex items-center gap-2 font-label-sm text-primary hover:text-primary-fixed transition-colors font-semibold">
-              Lihat Semua Agenda <ArrowRight className="w-4 h-4" />
+            <h3 className="font-sans text-xl font-bold uppercase tracking-widest text-on-surface">Berita Tidak Ditemukan</h3>
+            <p className="font-sans text-sm text-on-surface-variant max-w-md">
+              Tidak ada artikel berita yang sesuai dengan kata kunci "{searchQuery}" {selectedCategory !== "Semua" ? `di kategori ${selectedCategory}` : ""}.
+            </p>
+            <button
+              onClick={() => { setSearchQuery(""); setSelectedCategory("Semua"); }}
+              className="mt-2 text-[10px] font-bold uppercase tracking-widest text-primary border border-primary/20 px-4 py-2 rounded hover:bg-primary hover:text-white transition-colors"
+            >
+              Reset Pencarian
             </button>
           </div>
-
-          <div className="flex flex-col gap-4">
-            {agenda.map((agenda, i) => (
-              <motion.div 
-                key={i}
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {filteredBerita.map((news, i) => (
+              <motion.article 
+                key={news.slug || news.id || i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-                className="bg-white p-6 md:p-8 rounded-3xl shadow-sm hover:shadow-md transition-shadow border border-surface-variant/30 flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center group"
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: (i % 6) * 0.05, ease: "easeOut" }}
+                className="group cursor-pointer flex flex-col h-full bg-white rounded-md border border-surface-variant/50 hover:shadow-md transition-shadow duration-300"
               >
-                {/* Date Block */}
-                <div className="w-full md:w-32 shrink-0 flex flex-row md:flex-col items-center justify-between md:justify-center bg-primary/5 rounded-2xl p-4 md:py-6 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                  <span className="font-display-lg text-3xl md:text-4xl text-primary group-hover:text-white mb-0 md:mb-1">
-                    {agenda.date}
-                  </span>
-                  <span className="font-label-sm text-primary/80 group-hover:text-white/80 uppercase tracking-widest">
-                    {agenda.month}
-                  </span>
-                </div>
-                
-                {/* Content */}
-                <div className="flex-grow flex flex-col gap-3">
-                  <h3 className="font-title-md text-xl md:text-2xl text-on-surface font-semibold tracking-tight leading-snug">{agenda.title}</h3>
-                  <p className="font-body-md text-on-surface-variant line-clamp-2 md:line-clamp-none">{agenda.description}</p>
-                </div>
-                
-                {/* Meta */}
-                <div className="w-full md:w-64 shrink-0 flex flex-col gap-3 pt-4 md:pt-0 border-t md:border-t-0 border-surface-variant/30 md:border-l md:pl-8">
-                  <div className="flex items-center gap-3 text-on-surface-variant">
-                    <Clock className="w-5 h-5 text-primary/70" />
-                    <span className="font-label-sm text-[14px]">{agenda.time}</span>
+                <Link href={`/berita/${news.slug || news.id}`} className="flex flex-col h-full p-5">
+                  <div className="aspect-video rounded bg-surface-bright border border-surface-variant/30 overflow-hidden mb-5 relative shrink-0">
+                    {news.image ? (
+                      <img 
+                        src={news.image} 
+                        alt={news.title} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="material-symbols-outlined text-4xl text-surface-variant">image</span>
+                      </div>
+                    )}
+                    <div className="absolute top-3 left-3 bg-primary text-white px-2.5 py-1 rounded text-[9px] uppercase tracking-widest font-bold shadow-sm">
+                      {news.category}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 text-on-surface-variant">
-                    <MapPin className="w-5 h-5 text-primary/70" />
-                    <span className="font-label-sm text-[14px]">{agenda.location}</span>
+
+                  <div className="flex flex-col flex-grow">
+                    <div className="flex items-center gap-3 text-on-surface-variant text-[10px] uppercase tracking-widest font-bold mb-3 flex-wrap">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-primary" />
+                        {new Date(news.date).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                      </span>
+                      {news.author && (
+                        <span className="flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-primary" />
+                          {news.author}
+                        </span>
+                      )}
+                    </div>
+
+                    <h2 className="font-sans text-lg text-on-surface mb-3 group-hover:text-primary transition-colors tracking-tight leading-snug font-bold line-clamp-2">
+                      {news.title}
+                    </h2>
+                    <p className="font-sans text-sm text-on-surface-variant line-clamp-3 mb-6 leading-relaxed text-justify">
+                      {news.snippet || news.content}
+                    </p>
+                    <div className="mt-auto flex items-center text-primary font-sans text-xs uppercase tracking-widest gap-2 font-bold group-hover:translate-x-1 transition-transform">
+                      Baca Selengkapnya <ArrowRight className="w-4 h-4" />
+                    </div>
                   </div>
-                </div>
-              </motion.div>
+                </Link>
+              </motion.article>
             ))}
           </div>
-        </div>
+        )}
       </section>
+
     </div>
   );
 }

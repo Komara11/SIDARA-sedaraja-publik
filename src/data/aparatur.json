@@ -3,24 +3,72 @@
     "id": "1",
     "name": "Bpk. H. Sudirman",
     "role": "Kepala Desa",
-    "level": 1
+    "level": 1,
+    "nip": "19750812 200212 1 001",
+    "tugas": "Memimpin penyelenggaraan pemerintahan desa, pelaksanaan pembangunan, pembinaan dan pemberdayaan masyarakat."
   },
   {
     "id": "2",
-    "name": "Ibu Siti Aminah",
+    "name": "Ibu Siti Aminah, S.IP",
     "role": "Sekretaris Desa",
-    "level": 2
+    "level": 2,
+    "nip": "19820315 200904 2 003",
+    "tugas": "Membantu Kepala Desa dalam bidang administrasi pemerintahan dan koordinasi unsur sekretariat."
   },
   {
     "id": "3",
-    "name": "Bpk. Rahmat",
+    "name": "Bpk. Rahmat, S.Sos",
     "role": "Kasi Pemerintahan",
-    "level": 2
+    "level": 2,
+    "nip": "19851120 201001 1 004",
+    "tugas": "Melaksanakan manajemen tata praja pemerintahan, ketentraman, dan ketertiban masyarakat."
   },
   {
     "id": "4",
-    "name": "Bpk. Agus S.",
+    "name": "Bpk. Agus Supriatna",
     "role": "Kasi Kesejahteraan",
-    "level": 2
+    "level": 2,
+    "nip": "19880104 201203 1 002",
+    "tugas": "Melaksanakan pembangunan sarana prasarana, sosial budaya, dan pemberdayaan masyarakat."
+  },
+  {
+    "id": "5",
+    "name": "Bpk. Dede Kurniawan",
+    "role": "Kasi Pelayanan",
+    "level": 2,
+    "nip": "19900612 201502 1 005",
+    "tugas": "Melaksanakan penyuluhan dan pembinaan pelayanan publik serta kependudukan."
+  },
+  {
+    "id": "6",
+    "name": "Ibu Dewi Lestari, A.Md",
+    "role": "Kaur Keuangan",
+    "level": 3,
+    "nip": "19920918 201704 2 006",
+    "tugas": "Pengelolaan administrasi keuangan desa, penganggaran, dan pelaporan APBDesa."
+  },
+  {
+    "id": "7",
+    "name": "Bpk. Yudi Hermawan",
+    "role": "Kaur Umum & Perencanaan",
+    "level": 3,
+    "nip": "19910405 201601 1 007",
+    "tugas": "Urusan surat-menyurat, kearsipan, penyusunan rencana pembangunan jangka menengah & tahunan."
+  },
+  {
+    "id": "8",
+    "name": "Bpk. Ahmad Fauzi",
+    "role": "Kepala Dusun I",
+    "level": 4,
+    "nip": "-",
+    "tugas": "Penyelenggaraan pemerintahan dan pembangunan di wilayah Dusun I."
+  },
+  {
+    "id": "9",
+    "name": "Bpk. Endang Suhendar",
+    "role": "Kepala Dusun II",
+    "level": 4,
+    "nip": "-",
+    "tugas": "Penyelenggaraan pemerintahan dan pembangunan di wilayah Dusun II."
   }
 ]

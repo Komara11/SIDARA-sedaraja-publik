@@ -2,422 +2,333 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-
-const heroImages = [
-  "/images/hero/hero_village_1_1786099765765.png",
-  "/images/hero/hero_village_2_1786099820551.png",
-  "/images/hero/hero_village_3_1786099842051.png"
-];
+import { ArrowRight, ChevronRight, MapPin, Clock } from "lucide-react";
 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [generalData, setGeneralData] = useState<any>(null);
   const [berita, setBerita] = useState<any[]>([]);
+  const [h, setH] = useState<any>(null);
+  const [kepalaDesa, setKepalaDesa] = useState<any>(null);
+
+  const fallbackImages = [
+    "https://i.pinimg.com/1200x/35/99/86/3599860081745127e3e905ae76fa9215.jpg"
+  ];
+  const heroImages = generalData?.settings?.heroImages?.length > 0 ? generalData.settings.heroImages : fallbackImages;
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 10000);
-    
+      setCurrentImageIndex((prev) => prev + 1);
+    }, 6000);
     Promise.all([
       fetch('/api/general').then(r => r.json()),
-      fetch('/api/berita').then(r => r.json())
-    ]).then(([gen, ber]) => {
+      fetch('/api/berita').then(r => r.json()),
+      fetch('/api/halaman').then(r => r.json()),
+      fetch('/api/aparatur').then(r => r.json()).catch(() => [])
+    ]).then(([gen, ber, hal, aparatur]) => {
       setGeneralData(gen);
-      setBerita(ber.slice(0, 5));
-    });
-    
+      setBerita(Array.isArray(ber) ? ber.slice(0, 4) : []);
+      setH(hal);
+      if (Array.isArray(aparatur)) {
+        setKepalaDesa(aparatur.find((a: any) => a.level === 1) || null);
+      }
+    }).catch(() => {});
     return () => clearInterval(interval);
   }, []);
 
+  const stats = h?.stats || [
+    { icon: "group", count: "3.2k+", label: "Total Penduduk", dynamic: true },
+    { icon: "landscape", count: "450", label: "Luas Wilayah (Ha)" },
+    { icon: "agriculture", count: "12", label: "Kelompok Tani", dynamic: true },
+    { icon: "tour", count: "5", label: "Destinasi Wisata", dynamic: true },
+  ];
+
+  const getDynamicValue = (label: string, fallback: string) => {
+    if (!generalData) return fallback;
+    
+    if (label === "Total Penduduk" && generalData?.demografi?.total) {
+      return generalData.demografi.total;
+    }
+    
+    if (label === "Kelompok Tani" && generalData?.potensi) {
+      let total = 0;
+      generalData.potensi.forEach((p: any) => {
+        p.metrics.forEach((m: any) => {
+           if (m.label.toLowerCase().includes("poktan") || m.value.toLowerCase().includes("poktan") || 
+               m.label.toLowerCase().includes("kelompok") || m.value.toLowerCase().includes("kelompok")) {
+               const num = parseInt(m.value.replace(/[^0-9]/g, ''));
+               if (!isNaN(num) && num > 0) total += num;
+           }
+        });
+      });
+      return total > 0 ? total : fallback;
+    }
+    
+    if (label === "Destinasi Wisata" && generalData?.potensi) {
+      const total = generalData.potensi.filter((p: any) => p.category.toLowerCase() === "wisata").length;
+      return total;
+    }
+    
+    return fallback;
+  };
+
   return (
-    <div className="flex flex-col w-full bg-surface-bright">
-      {/* Hero Section */}
-      <section className="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Full Screen Image Slider */}
-        <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
-            <motion.img 
-              key={currentImageIndex}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0 w-full h-full object-cover" 
-              src={heroImages[currentImageIndex]}
-              alt="Desa Sedaraja"
-            />
-          </AnimatePresence>
-          {/* Gradient Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/60" />
-        </div>
-        
-        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 w-full flex flex-col items-center text-center mt-12 md:mt-24">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="flex flex-col items-center w-full max-w-5xl lg:max-w-6xl"
+    <div className="flex flex-col w-full bg-surface overflow-x-hidden">
+      {/* Full Width Hero Banner */}
+      <section className="relative w-full h-[100svh] min-h-[600px] flex items-center bg-black overflow-hidden">
+        {heroImages.map((src: string, idx: number) => (
+          <div 
+            key={idx} 
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${idx === currentImageIndex % heroImages.length ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
           >
-            <h1 className="font-sans font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-4 sm:mb-6 leading-[1.15] tracking-tight drop-shadow-xl w-full">
-              {generalData?.settings?.motto ? (
-                <>
-                  <span className="text-emerald-400">{generalData.settings.motto.split(' ')[0]}</span>{' '}
-                  {generalData.settings.motto.split(' ').slice(1).join(' ')}
-                </>
-              ) : (
-                <>Membangun <span className="text-emerald-400">Sedaraja</span> Melalui Ekosistem Digital.</>
-              )}
+            <img 
+              src={src} 
+              alt="Pemandangan Desa Sedaraja" 
+              className="w-full h-full object-cover opacity-60"
+            />
+          </div>
+        ))}
+        
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 pointer-events-none"></div>
+
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-30 w-full flex flex-col items-start text-left mt-16">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-3xl">
+            <h1 className="font-sans font-extrabold text-3xl sm:text-4xl md:text-5xl text-white mb-4 leading-tight tracking-tight uppercase">
+              Membangun Desa Melalui <br className="hidden sm:block" />
+              <span className="text-emerald-400">Ekosistem Digital Transparan</span>
             </h1>
-            <p className="font-sans text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 max-w-3xl leading-relaxed drop-shadow-md px-4">
+            <p className="font-sans text-base sm:text-lg text-white/90 leading-relaxed mb-8 max-w-xl mr-auto">
               Platform terpadu untuk transparansi, pengelolaan potensi lokal, dan pelayanan desa yang berorientasi pada kemajuan berkelanjutan.
             </p>
-
-            {/* Logos Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
-              className="mt-8 flex flex-row items-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-2 shadow-2xl overflow-visible max-w-[90vw] md:max-w-none mx-auto overflow-x-auto hide-scrollbar"
-            >
-              {/* Kolaborasi Text */}
-              <div className="flex flex-col items-start pl-4 md:pl-6 pr-3 md:pr-8 border-r border-white/20 shrink-0">
-                <span className="font-sans text-[8px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.25em] text-emerald-400 uppercase mb-0.5 md:mb-1">
-                  Kolaborasi
-                </span>
-                <span className="font-sans text-[11px] md:text-base font-semibold text-white tracking-wide leading-tight">
-                  Ekosistem Digital
-                </span>
-              </div>
-              
-              {/* Logos */}
-              <div className="flex items-center gap-2 md:gap-5 px-3 md:px-6 py-1 md:py-1 shrink-0">
-                {/* Logo Kampus */}
-                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1.5 md:p-2.5 hover:scale-110 transition-transform cursor-pointer">
-                  <img src="/images/logo_kampus.png" alt="Logo Kampus" className="w-full h-full object-contain" />
-                  <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
-                    INSTBUNAS
-                  </div>
-                </div>
-                
-                <span className="text-white/50 text-sm md:text-xl font-light">+</span>
-                
-                {/* Logo Desa (Tengah) */}
-                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1.5 md:p-2.5 hover:scale-110 transition-transform cursor-pointer text-primary">
-                  <span className="material-symbols-outlined text-[18px] md:text-[32px]">shield</span>
-                  <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
-                    Desa Sedaraja
-                  </div>
-                </div>
-
-                <span className="text-white/50 text-sm md:text-xl font-light">+</span>
-                
-                {/* Logo KKN */}
-                <div className="relative group w-9 h-9 md:w-14 md:h-14 rounded-full bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.3)] p-1 md:p-2 hover:scale-110 transition-transform cursor-pointer">
-                  <img src="/images/logo_kkn.png" alt="Logo KKN" className="w-full h-full object-contain scale-95" />
-                  <div className="absolute -top-12 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-xl z-50">
-                    Kuliah Kerja Nyata (KKN)
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Floating Stats */}
-      <section className="relative px-margin-mobile md:px-margin-desktop w-full pt-16 md:pt-24 pb-12 z-20 bg-surface-bright">
-        <div className="max-w-container-max mx-auto">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.4 }}
-            variants={{
-              hidden: { opacity: 0, y: 50 },
-              visible: { 
-                opacity: 1, 
-                y: 0,
-                transition: { 
-                  duration: 0.8, 
-                  ease: "easeOut",
-                  staggerChildren: 0.15,
-                  delayChildren: 0.2
-                }
-              }
-            }}
-            className="bg-white rounded-[2rem] shadow-2xl shadow-black/5 border border-surface-variant/50 p-6 sm:p-8 md:p-12 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
-          >
-            {[
-              { icon: "group", count: "3.2k+", label: "Total Penduduk" },
-              { icon: "landscape", count: "450", label: "Luas Wilayah (Ha)" },
-              { icon: "agriculture", count: "12", label: "Kelompok Tani" },
-              { icon: "tour", count: "5", label: "Destinasi Wisata" },
-            ].map((stat, i) => (
-              <motion.div 
-                key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-                }}
-                className="flex flex-col items-center text-center"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
-                  <span className="material-symbols-outlined">{stat.icon}</span>
-                </div>
-                <h3 className="font-sans font-bold text-3xl sm:text-4xl md:text-5xl text-on-surface tracking-tight mb-2">
-                  {i === 0 ? generalData?.demografi?.total || stat.count :
-                   i === 1 ? "450" :
-                   i === 2 ? "12" :
-                   i === 3 ? "5" : stat.count}
-                </h3>
-                <p className="font-sans text-xs sm:text-sm font-medium text-on-surface-variant uppercase tracking-wider">{stat.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Profil Singkat */}
-      <section className="py-24 md:py-32 px-margin-mobile md:px-margin-desktop w-full relative bg-surface-bright">
-        <div className="max-w-container-max mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-24">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="w-full md:w-1/2 relative"
-            >
-              <div className="relative">
-                <div className="aspect-[4/5] md:aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl shadow-surface-variant relative z-10 border-8 border-white">
-                  <img 
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFCRVYrpmLXh11AFdsG1r9ap0bPwseYAoj4WgwKYrD9m3TtDfITcPmvr5Edkv7h6UAzH9iM8Ft4F35_5LBTjIswAqYZkXx292XLkHYmTFUdGFxo_Ufic9b661ekTGKLYI-rQJuFuTIHRJ4SXkI6GDbCv3ZXPXZOouH1bN3Zs8eVeILkWF_l33JU6OowoYreSM7aUDe06zrcqKTkeNOxu42YVBqjb7HkqVcLOoSbLVM03BdnirSXlvc"
-                    alt="Profil Desa"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
-                </div>
-                
-                {/* Floating Card */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                  className="absolute -bottom-6 -left-4 md:-left-8 z-20 bg-white/90 backdrop-blur-xl p-5 md:p-6 rounded-3xl shadow-xl shadow-black/5 border border-white/60 flex items-center gap-4 md:gap-5"
-                >
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center text-primary shadow-inner">
-                    <span className="material-symbols-outlined text-[24px] md:text-[28px]">verified</span>
-                  </div>
-                  <div>
-                    <p className="font-sans text-base md:text-lg font-bold text-on-surface leading-tight">Desa Digital</p>
-                    <p className="font-sans text-xs md:text-sm text-on-surface-variant font-medium mt-1">Terintegrasi & Transparan</p>
-                  </div>
-                </motion.div>
-
-                {/* Decorative blob */}
-                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/20 rounded-full blur-3xl -z-10" />
-                <div className="absolute -top-10 -left-10 w-48 h-48 bg-tertiary/20 rounded-full blur-3xl -z-10" />
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-              className="w-full md:w-1/2 flex flex-col"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-10 h-[2px] bg-primary rounded-full"></span>
-                <span className="font-sans text-sm font-bold text-primary uppercase tracking-widest">Profil Desa</span>
-              </div>
-              
-              <h2 className="font-sans font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-on-surface mb-6 tracking-tight leading-[1.15]">
-                Harmoni Tradisi & <br/>
-                <span className="text-primary relative inline-block mt-2">
-                  Inovasi Digital.
-                  <span className="absolute bottom-2 left-0 w-full h-3 bg-primary/20 -z-10 rounded-full"></span>
-                </span>
-              </h2>
-              
-              <p className="font-sans text-base sm:text-lg md:text-xl text-on-surface-variant mb-8 sm:mb-10 leading-relaxed">
-                Desa Sedaraja berkomitmen memberikan pelayanan prima bagi seluruh warga dengan mendigitalisasi inventarisasi dan pengelolaan potensi desa, dari pertanian hingga demografi, untuk kemajuan bersama.
-              </p>
-              
-              {/* Features List */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-4 mb-10">
-                {[
-                  { icon: "public", text: "Pelayanan Terpadu" },
-                  { icon: "nature_people", text: "Potensi Lokal" },
-                  { icon: "analytics", text: "Data Transparan" },
-                  { icon: "groups", text: "Komunitas Maju" }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 group cursor-default">
-                    <div className="w-10 h-10 rounded-xl bg-surface-container-low group-hover:bg-primary/10 transition-colors duration-300 flex items-center justify-center text-on-surface-variant group-hover:text-primary">
-                      <span className="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover:scale-110">{item.icon}</span>
-                    </div>
-                    <span className="font-sans text-sm md:text-base font-semibold text-on-surface group-hover:text-primary transition-colors duration-300">{item.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Link href="/profil" className="group relative inline-flex items-center justify-center gap-3 bg-on-surface text-surface px-8 py-4 rounded-full font-sans font-semibold text-sm transition-all duration-300 hover:bg-primary hover:text-white shadow-lg shadow-black/5 hover:shadow-primary/30 overflow-hidden w-max">
-                <span className="relative z-10">Kenali Kami Lebih Dekat</span>
-                <span className="material-symbols-outlined text-[20px] relative z-10 group-hover:translate-x-1 transition-transform">east</span>
+            <div className="flex flex-wrap items-center justify-start gap-4">
+              <Link href="/profil" className="bg-primary hover:bg-emerald-800 text-white font-bold px-6 py-3 text-xs uppercase tracking-widest transition-colors flex items-center gap-2">
+                <span>Profil Desa</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
-            </motion.div>
+              <Link href="/transparansi" className="bg-transparent hover:bg-white/10 text-white border border-white/50 font-bold px-6 py-3 text-xs uppercase tracking-widest transition-colors flex items-center gap-2 hidden sm:flex">
+                <span>Transparansi Dana</span>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Slideshow Indicators */}
+        <div className="absolute bottom-8 right-8 md:bottom-12 md:right-16 flex gap-2 z-20 hidden lg:flex">
+          {heroImages.map((_: any, idx: number) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentImageIndex(idx)}
+              className={`w-12 h-1 transition-all duration-300 ${idx === currentImageIndex % heroImages.length ? 'bg-primary' : 'bg-white/30 hover:bg-white/50'}`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Layanan Mobil Siaga Card (Desktop) */}
+        <div className="absolute top-1/2 -translate-y-1/2 right-8 md:right-16 z-30 hidden lg:flex flex-col gap-4 animate-in fade-in slide-in-from-right-8 duration-1000 delay-300 fill-mode-both">
+          <div className="bg-white border border-surface-variant/40 p-5 rounded-2xl shadow-2xl max-w-[280px] text-on-surface relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="flex items-center gap-3 mb-3 relative z-10">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-white">ambulance</span>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg leading-tight">Mobil Siaga</h3>
+                <p className="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Siap 24 Jam</p>
+              </div>
+            </div>
+            <p className="text-sm text-on-surface-variant mb-5 leading-relaxed relative z-10">
+              Layanan darurat medis dan transportasi bersiaga untuk warga Desa Sedaraja.
+            </p>
+            <a 
+              href={`https://wa.me/${generalData?.settings?.telepon ? generalData.settings.telepon.replace(/^0/, '62') : '6282116421443'}`} 
+              target="_blank" 
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-emerald-800 text-white font-bold py-3 px-4 rounded-xl transition-colors relative z-10 shadow-lg"
+            >
+              <span className="material-symbols-outlined text-[20px]">call</span>
+              {generalData?.settings?.telepon || "0821-1642-1443"}
+            </a>
+          </div>
+        </div>
+
+        {/* Layanan Mobil Siaga Floating Button (Mobile) */}
+        <div className="absolute bottom-8 right-4 z-30 flex lg:hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+           <a href={`https://wa.me/${generalData?.settings?.telepon ? generalData.settings.telepon.replace(/^0/, '62') : '6282116421443'}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-primary/90 backdrop-blur-md border border-primary/50 text-white p-3 sm:px-4 sm:py-3 rounded-full shadow-2xl hover:bg-emerald-800 transition-colors">
+              <span className="material-symbols-outlined animate-pulse">ambulance</span>
+              <span className="font-bold text-sm pr-2">{generalData?.settings?.telepon || "0821-1642-1443"}</span>
+           </a>
+        </div>
+      </section>
+
+      {/* Structured Stats */}
+      <section className="relative w-full z-20 bg-primary text-white border-b-4 border-primary-fixed">
+        <div className="max-w-container-max mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10 border-x border-white/10">
+            {stats.map((stat: any, i: number) => (
+              <div key={i} className="flex flex-col items-center text-center p-8 sm:p-10 hover:bg-white/5 transition-colors">
+                <span className="material-symbols-outlined text-3xl sm:text-4xl text-primary-fixed mb-4">{stat.icon}</span>
+                <h3 className="font-sans font-bold text-3xl sm:text-4xl tracking-tight mb-2">
+                  {stat.dynamic ? getDynamicValue(stat.label, stat.count) : stat.count}
+                </h3>
+                <p className="font-sans text-xs sm:text-sm font-semibold text-white/70 uppercase tracking-widest">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Berita Terbaru */}
-      <section className="py-24 md:py-32 px-margin-mobile md:px-margin-desktop w-full bg-white">
-        <div className="max-w-container-max mx-auto flex flex-col gap-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-surface-variant/50 pb-8">
+
+
+      {/* Layanan & Keunggulan (Formal List) */}
+      <section className="py-20 sm:py-24 px-margin-mobile md:px-margin-desktop w-full bg-surface-bright">
+        <div className="max-w-container-max mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 border-b border-surface-variant/60 pb-6">
             <div className="max-w-2xl">
-              <h2 className="font-display-lg text-3xl sm:text-4xl md:text-display-lg text-on-surface mb-4 tracking-tight">Kabar <span className="text-primary">Desa.</span></h2>
-              <p className="font-body-lg text-body-lg text-on-surface-variant">Pembaruan terkini seputar kegiatan, pembangunan, dan perkembangan di Desa Sedaraja.</p>
+              <span className="text-primary font-bold text-xs uppercase tracking-widest block mb-2">Layanan & Informasi</span>
+              <h2 className="font-sans font-bold text-3xl sm:text-4xl text-on-surface tracking-tight">Fokus Pelayanan Kami</h2>
             </div>
-            <Link href="/berita" className="text-primary bg-primary/5 hover:bg-primary/10 px-6 py-3 rounded-full font-title-md text-[15px] flex items-center gap-2 transition-all w-max whitespace-nowrap">
-              Lihat Semua Berita
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 border border-surface-variant/60 rounded-md shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-md mb-6 text-primary">
+                <span className="material-symbols-outlined text-2xl">public</span>
+              </div>
+              <h3 className="text-xl font-bold text-on-surface mb-3">Pelayanan Terpadu</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-6">
+                Kemudahan pengurusan dokumen dan surat warga secara digital, cepat, dan transparan melalui kantor administrasi desa.
+              </p>
+              <Link href="/pengaduan" className="text-primary font-bold text-sm flex items-center gap-1 hover:underline">
+                Akses Layanan <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+            
+            <div className="bg-white p-8 border border-surface-variant/60 rounded-md shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-md mb-6 text-primary">
+                <span className="material-symbols-outlined text-2xl">nature_people</span>
+              </div>
+              <h3 className="text-xl font-bold text-on-surface mb-3">Potensi Wilayah</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-6">
+                Pengembangan komoditas pertanian unggulan dan destinasi keindahan wisata alam yang dikelola bersama warga.
+              </p>
+              <Link href="/potensi" className="text-primary font-bold text-sm flex items-center gap-1 hover:underline">
+                Lihat Potensi <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="bg-white p-8 border border-surface-variant/60 rounded-md shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-md mb-6 text-primary">
+                <span className="material-symbols-outlined text-2xl">analytics</span>
+              </div>
+              <h3 className="text-xl font-bold text-on-surface mb-3">Data Transparan</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-6">
+                Akses terbuka untuk laporan APBDes, statistik demografi, dan inventarisasi aset desa yang diperbarui berkala.
+              </p>
+              <Link href="/transparansi" className="text-primary font-bold text-sm flex items-center gap-1 hover:underline">
+                Cek Data <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Berita Resmi */}
+      <section className="py-20 sm:py-24 px-margin-mobile md:px-margin-desktop w-full bg-white border-t border-surface-variant/40">
+        <div className="max-w-container-max mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 border-b border-surface-variant/60 pb-6">
+            <div className="max-w-2xl">
+              <span className="text-primary font-bold text-xs uppercase tracking-widest block mb-2">Publikasi Resmi</span>
+              <h2 className="font-sans font-bold text-3xl sm:text-4xl text-on-surface tracking-tight">Kabar Desa Terbaru</h2>
+            </div>
+            <Link href="/berita" className="text-primary border border-primary/30 hover:bg-primary/5 px-6 py-2 rounded-md text-sm font-bold transition-colors">
+              Lihat Semua Kabar
             </Link>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-8">
-            {/* Featured News (Left) */}
-            {berita.length > 0 && (
-              <motion.article 
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="lg:col-span-7 group cursor-pointer"
-              >
-                <Link href={`/berita/${berita[0].slug || berita[0].id}`}>
-                  <div className="rounded-[2rem] overflow-hidden mb-6 aspect-[4/3] md:aspect-[16/10] relative">
-                    {berita[0].image ? (
-                      <img src={berita[0].image} alt={berita[0].title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-                    ) : (
-                      <div className="w-full h-full bg-surface-container-low flex items-center justify-center">
-                        <span className="material-symbols-outlined text-6xl text-on-surface-variant/30">image</span>
-                      </div>
-                    )}
-                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur text-primary px-4 py-1.5 rounded-full font-label-sm text-[13px] shadow-sm">
-                      {berita[0].category}
-                    </div>
-                  </div>
-                  <span className="font-label-sm text-on-surface-variant block mb-3">
-                    {new Date(berita[0].date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}
-                  </span>
-                  <h3 className="font-display-lg text-2xl md:text-4xl text-on-surface mb-4 group-hover:text-primary transition-colors tracking-tight leading-snug">{berita[0].title}</h3>
-                  <p className="font-body-md text-on-surface-variant line-clamp-2 leading-relaxed">{berita[0].snippet || berita[0].content}</p>
-                </Link>
-              </motion.article>
-            )}
-
-            {/* List News (Right) */}
-            <div className="lg:col-span-5 flex flex-col justify-center gap-8 lg:gap-12">
-              {berita.slice(1).map((news, i) => (
-                <motion.article 
-                  key={news.slug || i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 + i * 0.1, ease: "easeOut" }}
-                  className="group cursor-pointer"
-                >
-                  <Link href={`/berita/${news.slug || news.id}`} className="flex gap-6 items-center w-full">
-                    <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shrink-0 relative">
-                      {news.image ? (
-                        <img src={news.image} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-                      ) : (
-                        <div className="w-full h-full bg-surface-container-low flex items-center justify-center">
-                          <span className="material-symbols-outlined text-4xl text-on-surface-variant/30">image</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-col py-2">
-                      <span className="text-primary font-label-sm text-[12px] uppercase tracking-wider mb-2 block font-semibold">{news.category} &bull; {new Date(news.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
-                      <h3 className="font-title-md text-[18px] md:text-[20px] text-on-surface group-hover:text-primary transition-colors leading-snug line-clamp-3">{news.title}</h3>
-                    </div>
-                  </Link>
-                </motion.article>
-              ))}
-              
-              {berita.length <= 1 && (
-                <div className="flex flex-col items-center justify-center h-full opacity-50 py-10">
-                  <span className="material-symbols-outlined text-4xl mb-2">article</span>
-                  <p>Belum ada berita lainnya</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {berita.map((news, i) => (
+              <Link key={i} href={`/berita/${news.slug || news.id}`} className="group flex flex-col border border-surface-variant/60 rounded-md overflow-hidden hover:border-primary/50 transition-colors bg-white">
+                <div className="aspect-[4/3] w-full overflow-hidden bg-surface-container-low">
+                  {news.image ? (
+                    <img src={news.image} alt={news.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center"><span className="material-symbols-outlined text-4xl text-on-surface-variant/30">newspaper</span></div>
+                  )}
                 </div>
-              )}
-            </div>
+                <div className="p-5 flex flex-col flex-grow">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-1 rounded">{news.category}</span>
+                    <span className="text-[11px] text-on-surface-variant font-medium">{new Date(news.date).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}</span>
+                  </div>
+                  <h3 className="font-bold text-on-surface mb-2 leading-snug group-hover:text-primary transition-colors line-clamp-2">{news.title}</h3>
+                  <p className="text-xs text-on-surface-variant line-clamp-2 mt-auto">{news.snippet || news.content}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Peta Lokasi */}
-      <section className="py-24 md:py-32 px-margin-mobile md:px-margin-desktop w-full bg-white">
+      {/* Lokasi & Informasi Operasional */}
+      <section className="py-20 sm:py-24 px-margin-mobile md:px-margin-desktop w-full bg-surface border-t border-surface-variant/40">
         <div className="max-w-container-max mx-auto">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
-            
-            {/* Info Panel */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="w-full lg:w-1/3 flex flex-col justify-center"
-            >
-              <h2 className="font-sans font-bold text-3xl sm:text-4xl text-on-surface mb-4 tracking-tight">Kunjungi Kami.</h2>
-              <p className="font-sans text-base text-on-surface-variant mb-10 leading-relaxed">
-                Kantor Kepala Desa Sedaraja terbuka untuk melayani segala kebutuhan administrasi dan informasi masyarakat.
-              </p>
-              
-              <div className="flex flex-col gap-8">
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <span className="material-symbols-outlined text-[24px]">location_on</span>
-                  </div>
-                  <div>
-                    <h4 className="font-sans font-bold text-lg text-on-surface mb-2">Alamat</h4>
-                    <p className="font-sans text-sm md:text-base text-on-surface-variant leading-relaxed">
-                      {generalData?.settings?.alamat || "Jl. Raya Sedaraja No. 1, Kec. Cingambul, Kabupaten Majalengka, Jawa Barat"}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                    <span className="material-symbols-outlined text-[24px]">schedule</span>
-                  </div>
-                  <div>
-                    <h4 className="font-sans font-bold text-lg text-on-surface mb-2">Jam Operasional</h4>
-                    <p className="font-sans text-sm md:text-base text-on-surface-variant leading-relaxed">Senin - Jumat: 08.00 - 15.00 WIB</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 border-b border-surface-variant/60 pb-6">
+            <div className="max-w-2xl">
+              <span className="text-primary font-bold text-xs uppercase tracking-widest block mb-2">Kantor Desa</span>
+              <h2 className="font-sans font-bold text-3xl sm:text-4xl text-on-surface tracking-tight">Lokasi & Operasional</h2>
+            </div>
+          </div>
 
-            {/* Map */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              className="w-full lg:w-2/3 h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary/5 border border-surface-variant/30"
-            >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2 bg-white p-4 rounded-md border border-surface-variant/50 shadow-sm w-full h-[350px] md:h-[450px]">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.56347862248!2d107.573117!3d-6.9034443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6398252477f%3A0x146a1f93d3e815b2!2sBandung%2C%20Bandung%20City%2C%20West%20Java!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15837.28935749712!2d108.3188548!3d-7.0863004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6f43e3f4e3c399%3A0x6b74e1d17b4c6439!2sSedaraja%2C%20Kec.%20Cingambul%2C%20Kabupaten%20Majalengka%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                 width="100%" 
                 height="100%" 
-                style={{ border: 0 }} 
-                allowFullScreen={true} 
+                style={{ border: 0, borderRadius: '4px' }} 
+                allowFullScreen={false} 
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Peta Desa Sedaraja"
-              />
-            </motion.div>
+              ></iframe>
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              <div className="bg-white p-8 rounded-md border border-surface-variant/60 shadow-sm flex flex-col gap-6">
+                <div>
+                  <h3 className="font-sans font-bold text-lg text-on-surface flex items-center gap-2 mb-3">
+                    <MapPin className="w-5 h-5 text-primary" /> Alamat Kantor
+                  </h3>
+                  <p className="font-sans text-sm text-on-surface-variant leading-relaxed">
+                    Jl. Raya Sedaraja No. 1, Kec. Cingambul,<br/>
+                    Kabupaten Majalengka, Jawa Barat 45467
+                  </p>
+                </div>
+                
+                <div className="h-px bg-surface-variant/40 w-full"></div>
+                
+                <div>
+                  <h3 className="font-sans font-bold text-lg text-on-surface flex items-center gap-2 mb-3">
+                    <Clock className="w-5 h-5 text-primary" /> Jam Operasional
+                  </h3>
+                  <ul className="flex flex-col gap-3 font-sans text-sm text-on-surface-variant">
+                    <li className="flex justify-between items-center">
+                      <span className="font-medium">Senin - Kamis</span>
+                      <span className="font-bold text-on-surface">08:00 - 15:00 WIB</span>
+                    </li>
+                    <li className="flex justify-between items-center">
+                      <span className="font-medium">Jumat</span>
+                      <span className="font-bold text-on-surface">08:00 - 11:30 WIB</span>
+                    </li>
+                    <li className="flex justify-between items-center text-red-500/80">
+                      <span className="font-medium">Sabtu - Minggu</span>
+                      <span className="font-bold">Tutup / Libur</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

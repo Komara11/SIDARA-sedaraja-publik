@@ -1,16 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell, PieChart, Pie, Legend } from "recharts";
-import { Users, User, UserCheck, Home, Loader2 } from "lucide-react";
+import { Users, User, UserCheck, Home, Loader2, Info } from "lucide-react";
 
 export default function DemografiPage() {
   const [stats, setStats] = useState<any>(null);
+  const [halaman, setHalaman] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/api/demografi')
-      .then(res => res.json())
-      .then(data => setStats(data));
+    Promise.all([
+      fetch('/api/demografi').then(res => res.json()),
+      fetch('/api/halaman').then(res => res.json())
+    ]).then(([statsData, halamanData]) => {
+      setStats(statsData);
+      setHalaman(halamanData.demografi || {});
+    });
   }, []);
 
   if (!stats) {
@@ -21,39 +25,15 @@ export default function DemografiPage() {
     );
   }
 
-  const CustomTooltipBar = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-4 rounded-2xl shadow-xl shadow-primary/5 border border-surface-variant/30">
-          <p className="font-label-sm text-on-surface-variant mb-1 font-semibold">{label}</p>
-          <p className="font-display-lg text-xl text-primary tracking-tight">
-            {payload[0].value.toLocaleString('id-ID')} Jiwa
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
 
-  const CustomTooltipPie = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-4 rounded-2xl shadow-xl shadow-primary/5 border border-surface-variant/30">
-          <p className="font-label-sm text-on-surface-variant mb-1 font-semibold">{payload[0].name}</p>
-          <p className="font-display-lg text-xl text-primary tracking-tight">
-            {payload[0].value}%
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
 
   return (
-    <div className="flex flex-col flex-grow w-full bg-surface-bright min-h-screen">
+    <div className="flex flex-col flex-grow w-full bg-surface min-h-screen">
       
       {/* Header Spacing */}
       <div className="pt-28 md:pt-32"></div>
+
+
 
       <section className="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full pb-32">
         <div className="flex flex-col gap-12 lg:gap-16">
@@ -72,125 +52,122 @@ export default function DemografiPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: "easeOut" }}
-                className="bg-white p-5 sm:p-6 md:p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 border border-surface-variant/30 flex flex-col items-start relative overflow-hidden group"
+                className="bg-white p-5 sm:p-6 md:p-8 rounded-md shadow-sm border border-surface-variant/50 flex flex-col items-start relative hover:shadow-md transition-shadow"
               >
-                <div className={`w-14 h-14 rounded-2xl bg-surface-container-low flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500 ${stat.color}`}>
-                  <stat.icon className="w-7 h-7" />
+                <div className={`w-12 h-12 rounded border border-surface-variant/30 bg-surface-bright flex items-center justify-center mb-6 ${stat.color}`}>
+                  <stat.icon className="w-6 h-6" />
                 </div>
-                <h3 className="font-display-lg text-3xl sm:text-4xl text-on-surface tracking-tight mb-2 z-10 relative">{stat.value.toLocaleString('id-ID')}</h3>
-                <p className="font-label-sm text-[12px] sm:text-[14px] text-on-surface-variant font-semibold z-10 relative">{stat.label}</p>
-                
-                {/* Decorative blur */}
-                <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-surface-container-low rounded-full blur-2xl opacity-50 group-hover:bg-primary/5 transition-colors duration-500" />
+                <h3 className="font-sans font-bold text-3xl sm:text-4xl text-on-surface tracking-tight mb-2 relative">{stat.value.toLocaleString('id-ID')}</h3>
+                <p className="font-sans text-[12px] sm:text-[14px] text-on-surface-variant font-bold uppercase tracking-wider relative">{stat.label}</p>
               </motion.div>
             ))}
           </div>
 
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Usia (Bar Chart) */}
+          {/* Simplified Data Progress Bars */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+            {/* Usia */}
             <motion.section 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="lg:col-span-2 bg-white p-8 md:p-10 rounded-[2rem] shadow-sm border border-surface-variant/30 flex flex-col hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-500"
+              className="lg:col-span-1 bg-white p-8 rounded-md shadow-sm border border-surface-variant/50 flex flex-col"
             >
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <div>
-                  <h3 className="font-title-md text-2xl text-on-surface font-semibold tracking-tight">Kelompok Usia</h3>
-                  <p className="font-label-sm text-on-surface-variant mt-1">Distribusi penduduk berdasarkan rentang umur</p>
-                </div>
-                <div className="bg-primary/10 text-primary px-4 py-1.5 rounded-full font-label-sm font-semibold text-[13px]">
-                  Diperbarui 2024
-                </div>
+              <div className="mb-6 border-b border-surface-variant/40 pb-4">
+                <h3 className="font-sans text-xl text-on-surface font-bold tracking-tight mb-1">{halaman?.chartUsiaLabel || "Kelompok Usia"}</h3>
+                <p className="font-sans text-xs text-on-surface-variant">{halaman?.chartUsiaDesc || "Distribusi penduduk berdasarkan rentang umur"}</p>
               </div>
-              <div className="w-full overflow-x-auto hide-scrollbar mt-4 pb-4">
-                <div className="h-[300px] min-w-[500px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={stats.usia} margin={{ top: 20, right: 10, left: -20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                    <XAxis dataKey="name" tick={{fill: '#64748b', fontSize: 12, fontWeight: 500}} axisLine={false} tickLine={false} tickMargin={12} />
-                    <YAxis tick={{fill: '#64748b', fontSize: 12, fontWeight: 500}} axisLine={false} tickLine={false} tickMargin={12} />
-                    <Tooltip content={<CustomTooltipBar />} cursor={{fill: '#f8fafc'}} />
-                    <Bar dataKey="value" radius={[8, 8, 0, 0]} maxBarSize={80}>
-                      {stats.usia.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity" />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-                </div>
+              <div className="flex flex-col gap-5">
+                {stats.usia.map((item: any, i: number) => {
+                  const percent = Math.round((item.value / stats.total) * 100);
+                  return (
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="font-sans text-sm font-bold text-on-surface-variant">{item.name}</span>
+                        <span className="font-sans text-sm font-bold text-on-surface">{item.value.toLocaleString('id-ID')} Jiwa</span>
+                      </div>
+                      <div className="w-full bg-surface-bright rounded-full h-3.5 overflow-hidden border border-surface-variant/30 relative">
+                        <div 
+                          className="h-full rounded-full transition-all duration-1000"
+                          style={{ width: `${Math.max(percent, 2)}%`, backgroundColor: item.fill }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-right font-bold tracking-widest uppercase text-on-surface-variant/70">{percent}%</span>
+                    </div>
+                  );
+                })}
               </div>
             </motion.section>
 
-            <div className="flex flex-col gap-8">
-              {/* Pendidikan (Pie Chart) */}
-              <motion.section 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                className="bg-white p-8 rounded-[2rem] shadow-sm border border-surface-variant/30 flex flex-col hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-500"
-              >
-                <h3 className="font-title-md text-xl text-on-surface font-semibold tracking-tight mb-6">Pendidikan</h3>
-                <div className="h-[200px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={stats.pendidikan}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={65}
-                        outerRadius={85}
-                        paddingAngle={5}
-                        dataKey="value"
-                        stroke="none"
-                      >
-                        {stats.pendidikan.map((entry: any, index: number) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity outline-none" />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltipPie />} />
-                      <Legend iconType="circle" wrapperStyle={{ fontSize: '13px', fontWeight: 500, color: '#64748b', paddingTop: '20px' }} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </motion.section>
+            {/* Pendidikan */}
+            <motion.section 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              className="lg:col-span-1 bg-white p-8 rounded-md shadow-sm border border-surface-variant/50 flex flex-col"
+            >
+              <div className="mb-6 border-b border-surface-variant/40 pb-4">
+                <h3 className="font-sans text-xl text-on-surface font-bold tracking-tight mb-1">{halaman?.chartPendidikanLabel || "Tingkat Pendidikan"}</h3>
+                <p className="font-sans text-xs text-on-surface-variant">Distribusi pendidikan terakhir warga</p>
+              </div>
+              <div className="flex flex-col gap-5">
+                {stats.pendidikan.map((item: any, i: number) => {
+                  const percent = Math.round((item.value / stats.total) * 100);
+                  return (
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="font-sans text-sm font-bold text-on-surface-variant">{item.name}</span>
+                        <span className="font-sans text-sm font-bold text-on-surface">{item.value.toLocaleString('id-ID')} Jiwa</span>
+                      </div>
+                      <div className="w-full bg-surface-bright rounded-full h-3.5 overflow-hidden border border-surface-variant/30 relative">
+                        <div 
+                          className="h-full rounded-full transition-all duration-1000"
+                          style={{ width: `${Math.max(percent, 1)}%`, backgroundColor: item.fill }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-right font-bold tracking-widest uppercase text-on-surface-variant/70">{percent}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.section>
 
-              {/* Pekerjaan (Pie Chart) */}
-              <motion.section 
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                className="bg-white p-8 rounded-[2rem] shadow-sm border border-surface-variant/30 flex flex-col hover:shadow-xl hover:shadow-primary/5 transition-shadow duration-500"
-              >
-                <h3 className="font-title-md text-xl text-on-surface font-semibold tracking-tight mb-6">Pekerjaan</h3>
-                <div className="h-[200px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={stats.pekerjaan}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={65}
-                        outerRadius={85}
-                        paddingAngle={5}
-                        dataKey="value"
-                        stroke="none"
-                      >
-                        {stats.pekerjaan.map((entry: any, index: number) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} className="hover:opacity-80 transition-opacity outline-none" />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltipPie />} />
-                      <Legend iconType="circle" wrapperStyle={{ fontSize: '13px', fontWeight: 500, color: '#64748b', paddingTop: '20px' }} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </motion.section>
-            </div>
+            {/* Pekerjaan */}
+            <motion.section 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              className="lg:col-span-1 bg-white p-8 rounded-md shadow-sm border border-surface-variant/50 flex flex-col"
+            >
+              <div className="mb-6 border-b border-surface-variant/40 pb-4">
+                <h3 className="font-sans text-xl text-on-surface font-bold tracking-tight mb-1">{halaman?.chartPekerjaanLabel || "Mata Pencaharian"}</h3>
+                <p className="font-sans text-xs text-on-surface-variant">Profesi dan pekerjaan utama warga</p>
+              </div>
+              <div className="flex flex-col gap-5">
+                {stats.pekerjaan.map((item: any, i: number) => {
+                  // Pekerjaan total might not exactly equal total penduduk, so use the sum of pekerjaan values
+                  const totalPekerjaan = stats.pekerjaan.reduce((acc: number, curr: any) => acc + curr.value, 0);
+                  const percent = Math.round((item.value / totalPekerjaan) * 100);
+                  return (
+                    <div key={i} className="flex flex-col gap-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="font-sans text-sm font-bold text-on-surface-variant">{item.name}</span>
+                        <span className="font-sans text-sm font-bold text-on-surface">{item.value.toLocaleString('id-ID')} Jiwa</span>
+                      </div>
+                      <div className="w-full bg-surface-bright rounded-full h-3.5 overflow-hidden border border-surface-variant/30 relative">
+                        <div 
+                          className="h-full rounded-full transition-all duration-1000"
+                          style={{ width: `${Math.max(percent, 1)}%`, backgroundColor: item.fill }}
+                        />
+                      </div>
+                      <span className="text-[10px] text-right font-bold tracking-widest uppercase text-on-surface-variant/70">{percent}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.section>
           </div>
         </div>
       </section>
